@@ -1,0 +1,13 @@
+<svg>
+  <circle cx="50%" cy="50%" r="30" fill="white" />
+  <circle cx="50%" cy="50%" r="29" fill="black" />
+  <!-- 12pm    -->
+  <arc x="42%" y="35%" width="50" height="50" fill="green" arc-width="20" start-angle="0" sweep-angle="20" />
+  <arc x="44%" y="36%" width="50" height="50" fill="yellow" arc-width="10" start-angle="0" sweep-angle="20" />
+
+
+
+
+
+
+</svg>

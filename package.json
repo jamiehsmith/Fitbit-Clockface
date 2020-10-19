@@ -1,0 +1,25 @@
+{
+  "devDependencies": {
+    "@fitbit/sdk": "~5.0.0"
+  },
+  "fitbit": {
+    "appUUID": "fc9e71f6-2de8-49e5-950d-b85d07bc0be6",
+    "appType": "app",
+    "appDisplayName": "Halo Clockface",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#607d8b",
+    "requestedPermissions": [
+      "access_heart_rate",
+      "access_activity"
+    ],
+    "buildTargets": [
+      "atlas"
+    ],
+    "i18n": {
+      "en-US": {
+        "name": "Halo Clockface"
+      }
+    },
+    "defaultLanguage": "en-US"
+  }
+}
