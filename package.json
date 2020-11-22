@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "@fitbit/sdk": "~5.0.0"
+    "@fitbit/sdk": "~4.2.0"
   },
   "fitbit": {
     "appUUID": "fc9e71f6-2de8-49e5-950d-b85d07bc0be6",
@@ -10,10 +10,11 @@
     "wipeColor": "#607d8b",
     "requestedPermissions": [
       "access_heart_rate",
+      "access_user_profile",
       "access_activity"
     ],
     "buildTargets": [
-      "atlas"
+      "meson"
     ],
     "i18n": {
       "en-US": {
