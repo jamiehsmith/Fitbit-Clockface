@@ -18,13 +18,23 @@
   y: $;
 }
 
+#dayLabel {
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 50%+42;
+  fill: #ffffff;
+}
+
 #dateLabel {
   font-size: 20;
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: middle;
   x: 50%;
-  y: 50%+40;
+  y: 50%+60;
   fill: #ffffff;
 }
 

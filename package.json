@@ -4,7 +4,7 @@
   },
   "fitbit": {
     "appUUID": "fc9e71f6-2de8-49e5-950d-b85d07bc0be6",
-    "appType": "app",
+    "appType": "clockface",
     "appDisplayName": "Halo Clockface",
     "iconFile": "resources/icon.png",
     "wipeColor": "#607d8b",
