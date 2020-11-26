@@ -1,9 +1,12 @@
 import document from "document";
 import clock from "clock";
 import { preferences } from "user-settings";
-import * as util from "../resources/utils";
+import * as utils from "../resources/utils";
 import { today } from "user-activity"
 import { display } from "display";
+import { HeartRateSensor } from "heart-rate";
+import { BodyPresenceSensor } from "body-presence";
+import { battery, charger } from "power";
 
 // Update the clock every minute
 clock.granularity = 'seconds';
@@ -12,7 +15,10 @@ const timeLabel = document.getElementById("timeLabel");
 let secLabel = document.getElementById("secLabel");
 let dateLabel = document.getElementById("dateLabel");
 let dayLabel = document.getElementById("dayLabel");
-let hoursFmted;
+let caloriesLabel = document.getElementById("caloriesLabel");
+let stepsLabel = document.getElementById("stepsLabel");
+let heartRateLabel = document.getElementById("heartRateLabel");
+let batteryLabel = document.getElementById("batteryLabel");
 
 let stepsThisPoint = 0;
 let stepsOffset = today.adjusted.steps;
@@ -21,11 +27,13 @@ let caloriesOffset = today.adjusted.calories;
 
 let initialPoint = true;
 let maxLineHeight = 20;
+let maxSteps = 100;
+let maxCalories = 50;
 let hours;
 let mins;
 let initialize = true;
 let updatesRunning = false;
-const dotCount = 96; 
+const dotCount = 96;
 const interval = (Math.PI * 2) / dotCount;
 const timePointInts = [0, 15, 30, 45];
 let timePoints = {
@@ -61,22 +69,23 @@ clock.ontick = (evt) => {
   mins = today_dt.getMinutes();
   let secs = today_dt.getSeconds();
   let day = today_dt.getDate();
+  let hoursFmted;
 
   if (preferences.clockDisplay === "12h") {
     // 12h format
-    hoursFmted = util.monoDigits(util.zeroPad(hours % 12 || 12));
+    hoursFmted = utils.monoDigits(utils.zeroPad(hours % 12 || 12));
   } else {
     // 24h format
-    hoursFmted = util.monoDigits(util.zeroPad(hours));
+    hoursFmted = utils.monoDigits(utils.zeroPad(hours));
   };
-  let minsFmted = util.monoDigits(util.zeroPad(mins));
-  let secsFmted = util.monoDigits(util.zeroPad(secs));
+  let minsFmted = utils.monoDigits(utils.zeroPad(mins));
+  let secsFmted = utils.monoDigits(utils.zeroPad(secs));
   
   timeLabel.text = `${hoursFmted}:${minsFmted}`;  
   secLabel.text = secsFmted;
   
-  let month = util.formattedMonth()[today_dt.getMonth()];
-  let weekday = util.formattedDays()[today_dt.getDay()];
+  let month = utils.formattedMonth()[today_dt.getMonth()];
+  let weekday = utils.formattedDays()[today_dt.getDay()];
   dayLabel.text = `${weekday}`;
   dateLabel.text = `${month} ${day}`;
 
@@ -101,16 +110,32 @@ clock.ontick = (evt) => {
     }
   }
   
+    // Add calories label
+    let calories = (today.adjusted.calories || 0).toLocaleString();
+    caloriesLabel.text = calories;
+  
+     // Add steps label
+    let steps = (today.adjusted.steps || 0).toLocaleString();
+    stepsLabel.text = steps;
+  
+    // Battery label
+    let batteryLevel = Math.floor(battery.chargeLevel);
+    let batterLevelFmted = '';
+    if (batteryLevel > 0) {
+        batterLevelFmted = `${utils.monoDigits(batteryLevel, false)}%`;
+    }
+    batteryLabel.text = batterLevelFmted;
+  
   // For testing - update every second
-  // addActivityLine();
+  // updateActivityLine();
 }
 
 // For testing - adding all points
-// for (let i = 72; i <= 72; i++) {
+// for (let i = 1; i <= 96; i++) {
 //   let height = 20;
 //   // let height = Math.floor(Math.random() * 20);
 //   setPoint(i, height, "step");
-//   height = Math.floor(Math.random() * 20);
+//   // height = Math.floor(Math.random() * 20);
 //   setPoint(i, height, "calories");
 // }
 
@@ -178,8 +203,6 @@ function getCurrentPoint() {
 }
 
 function calculateLineHeight(total, type) {
-  let maxSteps = 150;
-  let maxCalories = 100;
   let lineHeight = 0;
   if (type === "step") {
     if (total > 0 && total < maxSteps) {
@@ -199,6 +222,7 @@ function calculateLineHeight(total, type) {
     }
   }
   
+  console.log(`returning lineHeight ${lineHeight} for ${type}`)
   return lineHeight;
 }
 
@@ -236,7 +260,7 @@ function updateActivityLine() {
   currentLine['visible'] = true;
 }
 
-function setPreviousActivityLine(total, type) {
+async function setPreviousActivityLine(total, type) {
   console.log(`setPreviousActivityLine running with: ${total}, ${type}`)
   const currentLine = getCurrentPoint();
   const currentPoint = currentLine['point'];
@@ -247,29 +271,32 @@ function setPreviousActivityLine(total, type) {
   } else if (currentPoint === 1) {
     currentPoint = 96;
   }
-  
-  if (type === "step") {
+
+  if (type === "calories") {
+    caloriesThisPoint = today.adjusted.calories - total || 0;
+    lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
+    console.log(`forpreviousline, setting: point: ${currentPoint}, ${lineHeight}, calories`)
+    setPoint(currentPoint, lineHeight, "calories");
+  } else if (type === "step") {
     stepsThisPoint = today.adjusted.steps - total || 0;
     lineHeight = calculateLineHeight(stepsThisPoint, "step");
     console.log(`forpreviousline, setting: point: ${currentPoint}, ${lineHeight}, step`)
     setPoint(currentPoint, lineHeight, "step");
-  } else if (type === "calories") {
-    caloriesThisPoint = today.adjusted.calories - total || 0;
-    lineHeight = calculateLineHeight(stepsThisPoint, "calories");
-    console.log(`forpreviousline, setting: point: ${currentPoint}, ${lineHeight}, calories`)
-    setPoint(currentPoint, lineHeight, "calories");
   }
+
   currentLine['visible'] = true;
+  
+  return;
 }
 
 function checkPreviousLines() {
   console.log('checkPreviousLines running');
   // Check mins from this hour for missing lines
 
-  // If current time is :45, no need to check previous minutes
-  if (mins <= 45) {
+  // If current time is < :15, no need to check previous minutes
+  if (mins > 15) {
     // Check :00 line
-    if (mins >= 15) {
+    if (mins > 15) {
       if (!timePoints[hours][0]['visible']) {
         addActivityLine(timePoints[hours][0]);
       }
@@ -290,31 +317,29 @@ function checkPreviousLines() {
     }
   }
 
-  // Loop through previous hours
-  for (var i = hours - 1; i >= 0; i--) {
-    for (var j = 0; j < timePointInts.length; j++) {
-      let minutes = timePointInts[j];
-      if (!timePoints[i][minutes]['visible']) {
-        // Point is not visible, add it
-        addActivityLine(timePoints[i][minutes]);
+  if (hours > 0) {
+    // Loop through previous hours
+    for (var i = hours - 1; i >= 0; i--) {
+      for (var j = 0; j < timePointInts.length; j++) {
+        let minutes = timePointInts[j];
+        if (!timePoints[i][minutes]['visible']) {
+          // Point is not visible, add it
+          addActivityLine(timePoints[i][minutes]);
+        }
       }
     }
   }
 }
 
-function updateActivityLines() {
-  // Hack to wake system for step count
-  display.poke();
-  display.on = false;
-
+async function updateActivityLines() {
   if (hours === 0 && mins === 0) {
     // Current point is midnight, reset points
     resetPoints();
   } else {
     console.log('not midnight, setting previous counts!');
     // Set final count for previous line
-    setPreviousActivityLine(caloriesOffset, "calorie");
-    setPreviousActivityLine(stepsOffset, "step");
+    await setPreviousActivityLine(caloriesOffset, "calorie");
+    await setPreviousActivityLine(stepsOffset, "step");
 
     checkPreviousLines();
   }
@@ -351,3 +376,31 @@ display.onchange = function() {
     updateActivityLine();
   }
 }
+
+// Heart rate and body sensors
+const hrm = new HeartRateSensor();
+const body = new BodyPresenceSensor();
+
+hrm.onreading = function() {
+    let hr = hrm.heartRate || 0;
+    let hrFmted;
+    if (hr === 0) {
+        hrFmted = "---";
+    } else {
+        hrFmted = utils.monoDigits(hr, false);
+    }
+    heartRateLabel.text = hrFmted;
+}
+hrm.onerror = function() {
+    heartRateLabel.text = "---";
+}
+
+body.onreading = () => {
+    if (!body.present) {
+        heartRateLabel.text = "---";
+        hrm.stop();
+    } else {
+        hrm.start();
+    }
+};
+body.start();
