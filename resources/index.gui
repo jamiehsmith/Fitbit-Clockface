@@ -3,7 +3,105 @@
 <text id="secLabel" />
 <text id="dayLabel" />
 <text id="dateLabel" />
-  
+
+<!-- Time lines -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint1" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint2" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint3" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint4" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint5" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint6" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint7" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint8" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint9" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint10" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint11" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint12" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint13" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint14" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint15" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint16" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint17" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint18" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint19" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint20" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint21" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint22" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint23" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint24" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint25" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint26" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint27" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint28" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint29" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint30" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint31" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint32" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint33" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint34" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint35" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint36" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint37" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint38" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint39" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint40" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint41" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint42" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint43" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint44" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint45" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint46" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint47" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint48" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint49" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint50" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint51" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint52" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint53" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint54" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint55" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint56" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint57" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint58" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint59" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint60" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint61" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint62" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint63" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint64" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint65" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint66" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint67" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint68" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint69" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint70" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint71" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint72" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint73" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint74" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint75" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint76" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint77" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint78" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint79" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint80" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint81" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint82" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint83" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint84" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint85" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint86" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint87" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint88" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint89" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint90" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint91" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint92" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint93" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint94" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint95" fill="white"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint96" fill="white"></line>
+
 <!-- Steps -->
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint1" fill="#FFBE0B"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint2" fill="#FFBE0B"></line>
@@ -102,6 +200,104 @@
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint95" fill="#FFBE0B"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint96" fill="#FFBE0B"></line>
 
+<!-- Distance -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint1" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint2" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint3" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint4" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint5" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint6" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint7" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint8" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint9" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint10" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint11" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint12" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint13" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint14" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint15" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint16" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint17" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint18" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint19" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint20" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint21" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint22" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint23" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint24" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint25" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint26" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint27" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint28" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint29" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint30" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint31" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint32" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint33" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint34" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint35" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint36" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint37" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint38" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint39" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint40" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint41" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint42" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint43" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint44" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint45" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint46" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint47" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint48" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint49" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint50" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint51" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint52" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint53" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint54" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint55" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint56" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint57" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint58" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint59" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint60" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint61" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint62" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint63" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint64" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint65" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint66" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint67" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint68" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint69" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint70" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint71" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint72" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint73" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint74" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint75" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint76" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint77" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint78" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint79" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint80" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint81" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint82" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint83" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint84" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint85" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint86" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint87" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint88" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint89" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint90" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint91" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint92" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint93" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint94" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint95" fill="#8338EC"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint96" fill="#8338EC"></line>
+
 <!-- Calories -->
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint1" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint2" fill="#FB5607"></line>
@@ -199,9 +395,117 @@
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint94" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint95" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint96" fill="#FB5607"></line>
-  
+
+<!-- Floors -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint1" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint2" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint3" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint4" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint5" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint6" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint7" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint8" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint9" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint10" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint11" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint12" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint13" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint14" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint15" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint16" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint17" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint18" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint19" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint20" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint21" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint22" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint23" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint24" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint25" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint26" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint27" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint28" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint29" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint30" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint31" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint32" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint33" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint34" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint35" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint36" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint37" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint38" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint39" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint40" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint41" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint42" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint43" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint44" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint45" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint46" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint47" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint48" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint49" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint50" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint51" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint52" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint53" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint54" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint55" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint56" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint57" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint58" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint59" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint60" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint61" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint62" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint63" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint64" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint65" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint66" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint67" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint68" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint69" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint70" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint71" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint72" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint73" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint74" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint75" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint76" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint77" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint78" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint79" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint80" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint81" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint82" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint83" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint84" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint85" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint86" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint87" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint88" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint89" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint90" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint91" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint92" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint93" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint94" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint95" fill="#008080"></line>
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint96" fill="#008080"></line>
+
 <text id="caloriesLabel" />
 <text id="stepsLabel" />
+<text id="distanceLabel" />
+<text id="floorsLabel" />
+<text id="azmLabel" />
 <text id="heartRateLabel" />
 <text id="batteryLabel" />
+
+<image class="statsIcon" id="heartRateIcon" href="icons/heart_rate.png" fill="#FF006E"/>
+<image class="statsIcon" id="stepsIcon" href="icons/steps.png" fill="#FFBE0B"/>
+<image class="statsIcon" id="caloriesIcon" href="icons/calories.png" fill="#FB5607"/>
+<image class="statsIcon" id="distanceIcon" href="icons/distance.png" fill="#8338EC"/>
+<image class="statsIcon" id="floorsIcon" href="icons/floors.png" fill="#8338EC"/>
+<image class="statsIcon" id="azmIcon" href="icons/azm.png" fill="#3A86FF"/>
 </svg>

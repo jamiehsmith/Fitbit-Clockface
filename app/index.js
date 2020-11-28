@@ -17,6 +17,9 @@ const dateLabel = document.getElementById("dateLabel");
 const dayLabel = document.getElementById("dayLabel");
 const caloriesLabel = document.getElementById("caloriesLabel");
 const stepsLabel = document.getElementById("stepsLabel");
+const distanceLabel = document.getElementById("distanceLabel");
+const floorsLabel = document.getElementById("floorsLabel");
+const azmLabel = document.getElementById("azmLabel");
 const heartRateLabel = document.getElementById("heartRateLabel");
 const batteryLabel = document.getElementById("batteryLabel");
 
@@ -24,14 +27,18 @@ let stepsThisPoint = 0;
 let stepsOffset = today.adjusted.steps;
 let caloriesThisPoint = 0;
 let caloriesOffset = today.adjusted.calories;
+let distanceThisPoint = 0;
+let distanceOffset = today.adjusted.distance;
+let floorsThisPoint = 0;
+let floorsOffset = today.adjusted.elevationGain;
 
-let initialPoint = true;
-let maxLineHeight = 20;
-let maxSteps = 100;
-let maxCalories = 50;
-// let hours;
-// let mins;
+const maxLineHeight = 20;
+const maxSteps = 100;
+const maxCalories = 50;
+const maxDistance = 100;
+const maxFloors = 2;
 let initialize = true;
+let updatesScheduled = false;
 let updatesRunning = false;
 const dotCount = 96;
 const interval = (Math.PI * 2) / dotCount;
@@ -75,6 +82,18 @@ clock.ontick = (evt) => {
   let steps = (today.adjusted.steps || 0).toLocaleString();
   stepsLabel.text = steps;
 
+  // Add distance label
+  let distance = (today.adjusted.distance || 0) * 0.000621371192; // convert meters to miles
+  distanceLabel.text = distance === 0 ? 0 : distance.toFixed(2);
+  
+  // Add floors label
+  let floors = (today.adjusted.elevationGain || 0);
+  floorsLabel.text = floors;
+  
+  // Add active zone minutes label
+  let activeZoneMinutes = (today.adjusted.activeZoneMinutes || 0);
+  azmLabel.text = activeZoneMinutes.total;
+
   // Battery label
   let batteryLevel = Math.floor(battery.chargeLevel);
   let batterLevelFmted = '';
@@ -93,7 +112,7 @@ if (initialize) {
   checkPreviousLines();
 }
 
-if (!updatesRunning) {
+if (!updatesScheduled) {
   checkIfCorrectInterval = setInterval(function() {
     // Every minute
     date = new Date();
@@ -106,7 +125,7 @@ if (!updatesRunning) {
     
     if (mins === 0 || mins === 15 || mins === 30 || mins === 45) {
       // Start automated line drawing we're on a 15 minute interval
-      updatesRunning = true;
+      updatesScheduled = true;
       updateActivityLines();
       drawActivityLines();
     }
@@ -130,15 +149,16 @@ function setPoint(point, height, type) {
   var x = 148 + r * Math.cos(t)
   var y = 148 + r * Math.sin(t)
   
-  if (height < 2) {
-    // Minimum height of 2 so bar is visible
-    height = 2;
+  if (type === "time") {
+    // Minimum height of 1 so bar is visible
+    height = 1.15;
   }
   
   pointElement.x1 = x;
   pointElement.y1 = y;
   pointElement.x2 = x + height * Math.cos(t);
   pointElement.y2 = y + height * Math.sin(t);
+  // console.log(`opacity is ${Math.max((height / maxLineHeight), .3)}`);
   pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
 }
 
@@ -150,7 +170,7 @@ function resetPoints() {
     stepPointElement.y1 = 149;
     stepPointElement.x2 = 149;
     stepPointElement.y2 = 149;
-    stepPointElement.opacity = 1;
+    stepPointElement.style.opacity = 1;
 
     let caloriesPointElement = document.getElementById(`caloriesPoint${i}`);
     
@@ -158,7 +178,7 @@ function resetPoints() {
     caloriesPointElement.y1 = 149;
     caloriesPointElement.x2 = 149;
     caloriesPointElement.y2 = 149;
-    caloriesPointElement.opacity = 1;
+    caloriesPointElement.style.opacity = 1;
   }
 
   for (var i = 0; i <= 23; i++) {
@@ -186,6 +206,7 @@ function getCurrentPoint() {
 }
 
 function calculateLineHeight(total, type) {
+  console.log(`calculateLineHeight running with ${type}`);
   let lineHeight = 0;
   if (type === "step") {
     if (total > 0 && total < maxSteps) {
@@ -203,6 +224,23 @@ function calculateLineHeight(total, type) {
       // Steps are greater than max steps, set to max height
       lineHeight = maxLineHeight;
     }
+  } else if (type === "distance") {
+    if (total > 0 && total < maxDistance) {
+      // Calculate steps to max step ratio
+      lineHeight = ((total / maxDistance) * 10) * 2;
+      console.log(`distance lineHeight ${lineHeight}`);
+    } else if (total > maxDistance) {
+      // Steps are greater than max steps, set to max height
+      lineHeight = maxLineHeight;
+    }
+  } else if (type === "floors") {
+    if (total > 0 && total < maxFloors) {
+      // Calculate steps to max step ratio
+      lineHeight = ((total / maxFloors) * 10) * 2;
+    } else if (total > maxFloors) {
+      // Steps are greater than max steps, set to max height
+      lineHeight = maxLineHeight;
+    }
   }
   
   return lineHeight;
@@ -212,8 +250,7 @@ function addActivityLine(point = null) {
   if (!point) {
     point = getCurrentPoint();
   }
-  setPoint(point['point'], 0, "calories");
-  setPoint(point['point'], 0, "step");
+  setPoint(point['point'], 0, "time");
 
   point['visible'] = true;
 }
@@ -223,15 +260,27 @@ function updateActivityLine() {
   const currentPoint = currentLine['point'];
   let lineHeight;
 
-  // Calculate calories since the hour
+  // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
   setPoint(currentPoint, lineHeight, "calories");
   
-  // Calculate steps since the hour
+  // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
   lineHeight = calculateLineHeight(stepsThisPoint, "step");
   setPoint(currentPoint, lineHeight, "step");
+  
+  // Calculate distance since previous point
+  distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
+  console.log(`distanceThisPoint ${distanceThisPoint}`);
+  lineHeight = calculateLineHeight(distanceThisPoint, "distance");
+  setPoint(currentPoint, lineHeight, "distance");
+  
+  // Calculate floors since previous point
+  floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
+  console.log(`floorsThisPoint ${floorsThisPoint}`);
+  lineHeight = calculateLineHeight(floorsThisPoint, "floors");
+  setPoint(currentPoint, lineHeight, "floors");
 
   currentLine['visible'] = true;
 }
@@ -255,6 +304,16 @@ async function setPreviousActivityLine(total, type) {
     stepsThisPoint = today.adjusted.steps - total || 0;
     lineHeight = calculateLineHeight(stepsThisPoint, "step");
     setPoint(currentPoint, lineHeight, "step");
+  } else if (type === "distance") {
+    distanceThisPoint = today.adjusted.distance - total || 0;
+    console.log(`distanceThisPoint ${distanceThisPoint}`);
+    lineHeight = calculateLineHeight(distanceThisPoint, "distance");
+    setPoint(currentPoint, lineHeight, "distance");
+  } else if (type === "floors") {
+    floorsThisPoint = today.adjusted.elevationGain - total || 0;
+    console.log(`floorsThisPoint ${floorsThisPoint}`);
+    lineHeight = calculateLineHeight(floorsThisPoint, "floors");
+    setPoint(currentPoint, lineHeight, "floors");
   }
 
   currentLine['visible'] = true;
@@ -304,6 +363,7 @@ function checkPreviousLines() {
 }
 
 async function updateActivityLines() {
+  updatesRunning = true;
   date = new Date();
   hours = date.getHours();
   mins = date.getMinutes();
@@ -314,8 +374,10 @@ async function updateActivityLines() {
     // Set final count for previous line
     await setPreviousActivityLine(caloriesOffset, "calorie");
     await setPreviousActivityLine(stepsOffset, "step");
+    await setPreviousActivityLine(distanceOffset, "distance");
+    await setPreviousActivityLine(floorsOffset, "floors");
 
-    checkPreviousLines();
+    // checkPreviousLines();
   }
 
   // Reset steps
@@ -326,7 +388,16 @@ async function updateActivityLines() {
   caloriesThisPoint = 0;
   caloriesOffset = today.adjusted.calories;
 
+  // Reset distance
+  distanceThisPoint = 0;
+  distanceOffset = today.adjusted.distance;
+
+  // Reset floors
+  floorsThisPoint = 0;
+  floorsOffset = today.adjusted.elevationGain;
+
   addActivityLine();
+  updatesRunning = false;
 }
 
 function drawActivityLines() {
@@ -346,8 +417,10 @@ display.onchange = function() {
   date = new Date();
   hours = date.getHours();
   mins = date.getMinutes();
-  if (display.on && mins !== 0 && mins !== 15 && mins !== 30 && mins !== 45) {
-    // Screen is on - update activity line
+  
+  const updateTime = mins === 0 || mins === 15 || mins === 30 || mins === 45;
+  if (display.on && !updatesRunning && !updateTime) {
+    // Screen is on - update current activity line
     updateActivityLine();
   }
 }
