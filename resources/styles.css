@@ -43,7 +43,7 @@
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
-  x: 65%;
+  x: 64%;
   y: 98%;
   fill: #FB5607;
 }
@@ -119,7 +119,7 @@
 }
 
 #caloriesIcon {
-  x: 58%;
+  x: 57%;
   y: 92%;
 }
 
@@ -141,4 +141,44 @@
 #heartRateIcon {
   x: 43%;
   y: 32%;
+}
+
+#stepsTestLabel {
+  font-size: 16;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 2%;
+  y: 15%;
+  fill: #FFBE0B;
+}
+
+#distanceTestLabel {
+  font-size: 16;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 2%;
+  y: 20%;
+  fill: #8338EC;
+}
+
+#caloriesTestLabel {
+  font-size: 16;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 2%;
+  y: 25%;
+  fill: #FB5607;
+}
+
+#floorsTestLabel {
+  font-size: 16;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: start;
+  x: 2%;
+  y: 30%;
+  fill: #008080;
 }

@@ -19,6 +19,12 @@ const caloriesLabel = document.getElementById("caloriesLabel");
 const stepsLabel = document.getElementById("stepsLabel");
 const distanceLabel = document.getElementById("distanceLabel");
 const floorsLabel = document.getElementById("floorsLabel");
+
+const caloriesTestLabel = document.getElementById("caloriesTestLabel");
+const stepsTestLabel = document.getElementById("stepsTestLabel");
+const distanceTestLabel = document.getElementById("distanceTestLabel");
+const floorsTestLabel = document.getElementById("floorsTestLabel");
+
 const azmLabel = document.getElementById("azmLabel");
 const heartRateLabel = document.getElementById("heartRateLabel");
 const batteryLabel = document.getElementById("batteryLabel");
@@ -33,10 +39,10 @@ let floorsThisPoint = 0;
 let floorsOffset = today.adjusted.elevationGain;
 
 const maxLineHeight = 20;
-const maxSteps = 100;
-const maxCalories = 50;
-const maxDistance = 100;
-const maxFloors = 2;
+const maxSteps = 250;
+const maxDistance = 150;
+const maxCalories = 100;
+const maxFloors = 10;
 let initialize = true;
 let updatesScheduled = false;
 let updatesRunning = false;
@@ -88,6 +94,7 @@ clock.ontick = (evt) => {
   
   // Add floors label
   let floors = (today.adjusted.elevationGain || 0);
+  console.log(`floors for label ${floors}`)
   floorsLabel.text = floors;
   
   // Add active zone minutes label
@@ -262,23 +269,26 @@ function updateActivityLine() {
 
   // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
+  caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
   setPoint(currentPoint, lineHeight, "calories");
   
   // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
+  stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
   lineHeight = calculateLineHeight(stepsThisPoint, "step");
   setPoint(currentPoint, lineHeight, "step");
   
   // Calculate distance since previous point
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
-  console.log(`distanceThisPoint ${distanceThisPoint}`);
+  distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
   lineHeight = calculateLineHeight(distanceThisPoint, "distance");
   setPoint(currentPoint, lineHeight, "distance");
   
   // Calculate floors since previous point
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
   console.log(`floorsThisPoint ${floorsThisPoint}`);
+  floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
   lineHeight = calculateLineHeight(floorsThisPoint, "floors");
   setPoint(currentPoint, lineHeight, "floors");
 

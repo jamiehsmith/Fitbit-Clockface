@@ -501,6 +501,11 @@
 <text id="azmLabel" />
 <text id="heartRateLabel" />
 <text id="batteryLabel" />
+  
+<text id="caloriesTestLabel" />
+<text id="stepsTestLabel" />
+<text id="distanceTestLabel" />
+<text id="floorsTestLabel" />
 
 <image class="statsIcon" id="heartRateIcon" href="icons/heart_rate.png" fill="#FF006E"/>
 <image class="statsIcon" id="stepsIcon" href="icons/steps.png" fill="#FFBE0B"/>
