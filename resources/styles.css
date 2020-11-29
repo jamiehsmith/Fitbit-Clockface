@@ -75,7 +75,7 @@
   text-anchor: start;
   x: 91%;
   y: 98%;
-  fill: #008080;
+  fill: #3A86FF;
 }
 
 #heartRateLabel {
@@ -180,5 +180,15 @@
   text-anchor: start;
   x: 2%;
   y: 30%;
-  fill: #008080;
+  fill: #3A86FF;
+}
+
+#testPoint1 {
+  opacity: 1;
+}
+
+#testPoint2 {
+  opacity: 1;
+  x: 20;
+  y: 30;
 }

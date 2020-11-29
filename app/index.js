@@ -94,7 +94,6 @@ clock.ontick = (evt) => {
   
   // Add floors label
   let floors = (today.adjusted.elevationGain || 0);
-  console.log(`floors for label ${floors}`)
   floorsLabel.text = floors;
   
   // Add active zone minutes label
@@ -170,22 +169,28 @@ function setPoint(point, height, type) {
 }
 
 function resetPoints() {
-  for (var i = 1; i <= dotCount; i++) {
-    let stepPointElement = document.getElementById(`stepPoint${i}`);
-    
-    stepPointElement.x1 = 149;
-    stepPointElement.y1 = 149;
-    stepPointElement.x2 = 149;
-    stepPointElement.y2 = 149;
-    stepPointElement.style.opacity = 1;
+  let coordinates = ['x1', 'y1', 'x2', 'y2'];
+  let timePointElement;
+  let stepPointElement;
+  let caloriesPointElement;
+  let distancePointElement;
+  let floorsPointElement;
 
-    let caloriesPointElement = document.getElementById(`caloriesPoint${i}`);
-    
-    caloriesPointElement.x1 = 149;
-    caloriesPointElement.y1 = 149;
-    caloriesPointElement.x2 = 149;
-    caloriesPointElement.y2 = 149;
-    caloriesPointElement.style.opacity = 1;
+  const pointElements = [timePointElement, stepPointElement,
+    caloriesPointElement, distancePointElement, floorsPointElement];
+  for (let i = 1; i <= dotCount; i++) {
+    timePointElement = document.getElementById(`timePoint${i}`);
+    stepPointElement = document.getElementById(`stepPoint${i}`);
+    caloriesPointElement = document.getElementById(`caloriesPoint${i}`);
+    distancePointElement = document.getElementById(`distancePoint${i}`);
+    floorsPointElement = document.getElementById(`floorsPoint${i}`);
+
+    for (let p = 0; p < pointElements.length; p++) {
+      for (let c = 0; c < coordinates.length; c++) {
+        pointElements[p][c] = 149;
+      }
+      pointElements[p]['style']['opacity'] = 1;
+    }
   }
 
   for (var i = 0; i <= 23; i++) {
@@ -215,39 +220,21 @@ function getCurrentPoint() {
 function calculateLineHeight(total, type) {
   console.log(`calculateLineHeight running with ${type}`);
   let lineHeight = 0;
-  if (type === "step") {
-    if (total > 0 && total < maxSteps) {
-      // Calculate steps to max step ratio
-      lineHeight = ((total / maxSteps) * 10) * 2;
-    } else if (total > maxSteps) {
-      // Steps are greater than max steps, set to max height
-      lineHeight = maxLineHeight;
-    }
-  } else if (type === "calories") {
-    if (total > 0 && total < maxCalories) {
-      // Calculate steps to max step ratio
-      lineHeight = ((total / maxCalories) * 10) * 2;
-    } else if (total > maxCalories) {
-      // Steps are greater than max steps, set to max height
-      lineHeight = maxLineHeight;
-    }
+  let max = maxSteps;
+  if (type === "calories") {
+    max = maxCalories;
   } else if (type === "distance") {
-    if (total > 0 && total < maxDistance) {
-      // Calculate steps to max step ratio
-      lineHeight = ((total / maxDistance) * 10) * 2;
-      console.log(`distance lineHeight ${lineHeight}`);
-    } else if (total > maxDistance) {
-      // Steps are greater than max steps, set to max height
-      lineHeight = maxLineHeight;
-    }
+    max = maxDistance;
   } else if (type === "floors") {
-    if (total > 0 && total < maxFloors) {
-      // Calculate steps to max step ratio
-      lineHeight = ((total / maxFloors) * 10) * 2;
-    } else if (total > maxFloors) {
-      // Steps are greater than max steps, set to max height
-      lineHeight = maxLineHeight;
-    }
+    max = maxFloors;
+  }
+
+  if (total > 0 && total < max) {
+    // Calculate steps to max step ratio
+    lineHeight = ((total / max) * 10) * 2;
+  } else if (total > max) {
+    // Steps are greater than max steps, set to max height
+    lineHeight = maxLineHeight;
   }
   
   return lineHeight;
