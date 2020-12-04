@@ -148,7 +148,12 @@ if (!updatesScheduled) {
 // }
 
 function setPoint(point, height, type) {
+  if (type === "step") {
+    point++;
+  }
+
   let pointElement = document.getElementById(`${type}Point${point}`);
+  console.log(`element id is ${type}Point${point}`);
 
   var t = interval * point;
   var r = 100;
@@ -169,6 +174,7 @@ function setPoint(point, height, type) {
 }
 
 function resetPoints() {
+  console.log('resetPoints running');
   let coordinates = ['x1', 'y1', 'x2', 'y2'];
   let timePointElement;
   let stepPointElement;
@@ -202,6 +208,7 @@ function resetPoints() {
 
 function getCurrentPoint() {
   if (mins === 0 || mins === 15 || mins === 30 || mins === 45) {
+    console.log(`current point is ${utils.timePoints[hours][mins]}`);
     return utils.timePoints[hours][mins];
   }
 
@@ -214,6 +221,7 @@ function getCurrentPoint() {
     timePos = 45;
   }
   
+  console.log(`current point is ${utils.timePoints[hours][timePos]}`);
   return utils.timePoints[hours][timePos];
 }
 
