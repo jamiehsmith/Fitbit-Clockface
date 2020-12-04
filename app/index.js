@@ -39,14 +39,14 @@ let floorsThisPoint = 0;
 let floorsOffset = today.adjusted.elevationGain;
 
 const maxLineHeight = 20;
-const maxSteps = 250;
+const maxSteps = 200;
 const maxDistance = 150;
 const maxCalories = 100;
 const maxFloors = 10;
 let initialize = true;
 let updatesScheduled = false;
 let updatesRunning = false;
-const dotCount = 96;
+const dotCount = 384;
 const interval = (Math.PI * 2) / dotCount;
 const timePointInts = [0, 15, 30, 45];
 let date = new Date();
@@ -140,15 +140,32 @@ if (!updatesScheduled) {
 
 // For testing - adds all points
 // for (let i = 1; i <= 96; i++) {
-//   let height = 20;
-//   // let height = Math.floor(Math.random() * 20);
+//   // let height = 20;
+//   let height = Math.floor(Math.random() * 20);
 //   setPoint(i, height, "step");
 //   // height = Math.floor(Math.random() * 20);
+//   let height = Math.floor(Math.random() * 20);
+  
 //   setPoint(i, height, "calories");
+//   let height = Math.floor(Math.random() * 20);
+  
+//   setPoint(i, height, "distance");
+//   let height = Math.floor(Math.random() * 20);
+  
+//   setPoint(i, height, "floors");
 // }
 
 function setPoint(point, height, type) {
   let pointElement = document.getElementById(`${type}Point${point}`);
+  point = point * 4;
+ 
+  if (type === "distance") {
+    point = point + 1;
+  } else if (type === "calories") {
+    point = point + 2;
+  } else if (type === "floors") {
+    point = point + 3;
+  }
 
   var t = interval * point;
   var r = 100;
@@ -169,6 +186,7 @@ function setPoint(point, height, type) {
 }
 
 function resetPoints() {
+  console.log('resetPoints running');
   let coordinates = ['x1', 'y1', 'x2', 'y2'];
   let timePointElement;
   let stepPointElement;
@@ -186,10 +204,20 @@ function resetPoints() {
     floorsPointElement = document.getElementById(`floorsPoint${i}`);
 
     for (let p = 0; p < pointElements.length; p++) {
-      for (let c = 0; c < coordinates.length; c++) {
-        pointElements[p][c] = 149;
+      let point = p * 4;
+ 
+      if (type === "distance") {
+        point = point + 1;
+      } else if (type === "calories") {
+        point = point + 2;
+      } else if (type === "floors") {
+        point = point + 3;
       }
-      pointElements[p]['style']['opacity'] = 1;
+
+      for (let c = 0; c < coordinates.length; c++) {
+        pointElements[point][c] = 149;
+      }
+      pointElements[point]['style']['opacity'] = 1;
     }
   }
 
@@ -364,6 +392,8 @@ async function updateActivityLines() {
   date = new Date();
   hours = date.getHours();
   mins = date.getMinutes();
+  console.log(`hours are ${hours}`);
+  console.log(`mins are ${mins}`);
   if (hours === 0 && mins === 0) {
     // Current point is midnight, reset points
     resetPoints();
