@@ -1,20 +1,10 @@
-#dayLabel {
-  font-size: 26;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%;
-  y: 67%;
-  fill: #ffffff;
-}
-
 #dateLabel {
-  font-size: 26;
+  font-size: 20;
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: middle;
   x: 50%;
-  y: 76%;
+  y: 6%;
   fill: #ffffff;
 }
 
@@ -43,8 +33,8 @@
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
-  x: 64%;
-  y: 98%;
+  x: 28%;
+  y: 74%;
   fill: #FB5607;
 }
 
@@ -53,8 +43,8 @@
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
-  x: 9%;
-  y: 98%;
+  x: 28%;
+  y: 66%;
   fill: #FFBE0B;
 }
 
@@ -63,8 +53,8 @@
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
-  x: 39%;
-  y: 98%;
+  x: 64%;
+  y: 66%;
   fill: #8338EC;
 }
 
@@ -73,8 +63,8 @@
   font-family: Seville-Book;
   text-length: 32;
   text-anchor: start;
-  x: 91%;
-  y: 98%;
+  x: 64%;
+  y: 74%;
   fill: #3A86FF;
 }
 
@@ -104,7 +94,7 @@
   text-length: 32;
   text-anchor: start;
   x: 10%;
-  y: 10%;
+  y: 6%;
   fill: #00ff00;
 }
 
@@ -114,23 +104,23 @@
 }
 
 #stepsIcon {
-  x: 1%;
-  y: 92%;
+  x: 20%;
+  y: 60%;
 }
 
 #caloriesIcon {
-  x: 57%;
-  y: 92%;
+  x: 20%;
+  y: 68%;
 }
 
 #distanceIcon {
-  x: 32%;
-  y: 92%;
+  x: 52%;
+  y: 60%;
 }
 
 #floorsIcon {
-  x: 84%;
-  y: 92%;
+  x: 52%;
+  y: 68%;
 }
 
 #azmIcon {
@@ -141,6 +131,7 @@
 #heartRateIcon {
   x: 43%;
   y: 32%;
+  fill: orange;
 }
 
 #stepsTestLabel {

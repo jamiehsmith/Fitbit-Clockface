@@ -14,7 +14,7 @@ clock.granularity = 'seconds';
 const timeLabel = document.getElementById("timeLabel");
 const secLabel = document.getElementById("secLabel");
 const dateLabel = document.getElementById("dateLabel");
-const dayLabel = document.getElementById("dayLabel");
+// const dayLabel = document.getElementById("dayLabel");
 const caloriesLabel = document.getElementById("caloriesLabel");
 const stepsLabel = document.getElementById("stepsLabel");
 const distanceLabel = document.getElementById("distanceLabel");
@@ -39,15 +39,16 @@ let floorsThisPoint = 0;
 let floorsOffset = today.adjusted.elevationGain;
 
 const maxLineHeight = 20;
-const maxSteps = 200;
-const maxDistance = 150;
+const maxSteps = 100;
+const maxDistance = 100;
 const maxCalories = 100;
 const maxFloors = 10;
 let initialize = true;
 let updatesScheduled = false;
 let updatesRunning = false;
-const dotCount = 384;
-const interval = (Math.PI * 2) / dotCount;
+// const dotCount = 96;
+const totalLines = 384;
+const interval = (Math.PI * 2) / totalLines;
 const timePointInts = [0, 15, 30, 45];
 let date = new Date();
 let hours = date.getHours();
@@ -77,8 +78,8 @@ clock.ontick = (evt) => {
   
   let month = utils.formattedMonth()[today_dt.getMonth()];
   let weekday = utils.formattedDays()[today_dt.getDay()];
-  dayLabel.text = `${weekday}`;
-  dateLabel.text = `${month} ${day}`;
+  // dayLabel.text = `${weekday}`;
+  dateLabel.text = `${weekday} ${month} ${day}`;
 
   // Add calories label
   let calories = (today.adjusted.calories || 0).toLocaleString();
@@ -140,17 +141,17 @@ if (!updatesScheduled) {
 
 // For testing - adds all points
 // for (let i = 1; i <= 96; i++) {
-//   // let height = 20;
-//   let height = Math.floor(Math.random() * 20);
+//   let height = 20;
+//   // let height = Math.floor(Math.random() * 20);
 //   setPoint(i, height, "step");
 //   // height = Math.floor(Math.random() * 20);
-//   let height = Math.floor(Math.random() * 20);
+//   // let height = Math.floor(Math.random() * 20);
   
 //   setPoint(i, height, "calories");
-//   let height = Math.floor(Math.random() * 20);
+//   // let height = Math.floor(Math.random() * 20);
   
 //   setPoint(i, height, "distance");
-//   let height = Math.floor(Math.random() * 20);
+//   // let height = Math.floor(Math.random() * 20);
   
 //   setPoint(i, height, "floors");
 // }
@@ -168,9 +169,9 @@ function setPoint(point, height, type) {
   }
 
   var t = interval * point;
-  var r = 100;
+  var r = 110;
   var x = 148 + r * Math.cos(t)
-  var y = 148 + r * Math.sin(t)
+  var y = 154 + r * Math.sin(t)
   
   if (type === "time") {
     // Minimum height of 1 so bar is visible
@@ -194,36 +195,31 @@ function resetPoints() {
   let distancePointElement;
   let floorsPointElement;
 
-  const pointElements = [timePointElement, stepPointElement,
-    caloriesPointElement, distancePointElement, floorsPointElement];
-  for (let i = 1; i <= dotCount; i++) {
+  let pointElements;
+  for (let i = 1; i <= 96; i++) {
     timePointElement = document.getElementById(`timePoint${i}`);
     stepPointElement = document.getElementById(`stepPoint${i}`);
     caloriesPointElement = document.getElementById(`caloriesPoint${i}`);
     distancePointElement = document.getElementById(`distancePoint${i}`);
     floorsPointElement = document.getElementById(`floorsPoint${i}`);
-
+    
+    pointElements = [timePointElement, stepPointElement,
+      caloriesPointElement, distancePointElement, floorsPointElement];
     for (let p = 0; p < pointElements.length; p++) {
-      let point = p * 4;
- 
-      if (type === "distance") {
-        point = point + 1;
-      } else if (type === "calories") {
-        point = point + 2;
-      } else if (type === "floors") {
-        point = point + 3;
-      }
-
       for (let c = 0; c < coordinates.length; c++) {
-        pointElements[point][c] = 149;
+        if (coordinates[c][0] === "x") {
+          pointElements[p][coordinates[c]] = 148;
+        } else {
+          pointElements[p][coordinates[c]] = 154;
+        }
       }
-      pointElements[point]['style']['opacity'] = 1;
+      pointElements[p]['style']['opacity'] = 1;
     }
   }
 
-  for (var i = 0; i <= 23; i++) {
+  for (let e = 0; e <= 23; e++) {
     for (var j = 0; j < timePointInts.length; j++) {
-      utils.timePoints[i][j]['visible'] = false;
+      utils.timePoints[e][j]['visible'] = false;
     }
   }
 }
@@ -284,26 +280,25 @@ function updateActivityLine() {
 
   // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
-  caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
+  // caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
   setPoint(currentPoint, lineHeight, "calories");
   
   // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
-  stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
+  // stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
   lineHeight = calculateLineHeight(stepsThisPoint, "step");
   setPoint(currentPoint, lineHeight, "step");
   
   // Calculate distance since previous point
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
-  distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
+  // distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
   lineHeight = calculateLineHeight(distanceThisPoint, "distance");
   setPoint(currentPoint, lineHeight, "distance");
   
   // Calculate floors since previous point
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
-  console.log(`floorsThisPoint ${floorsThisPoint}`);
-  floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
+  // floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
   lineHeight = calculateLineHeight(floorsThisPoint, "floors");
   setPoint(currentPoint, lineHeight, "floors");
 
