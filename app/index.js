@@ -7,6 +7,7 @@ import { display } from "display";
 import { HeartRateSensor } from "heart-rate";
 import { BodyPresenceSensor } from "body-presence";
 import { battery, charger } from "power";
+import * as fs from "fs";
 
 // Update the clock every minute
 clock.granularity = 'seconds';
@@ -54,6 +55,7 @@ let date = new Date();
 let hours = date.getHours();
 let mins = date.getMinutes();
 let checkIfCorrectInterval;
+let restoreData = {};
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;
@@ -117,6 +119,9 @@ if (initialize) {
   initialize = false;
   updateActivityLine();
   checkPreviousLines();
+  if (Object.keys(restoreData).length) {
+    restorePointsToDevice();
+  }
 }
 
 if (!updatesScheduled) {
@@ -158,6 +163,7 @@ if (!updatesScheduled) {
 
 function setPoint(point, height, type) {
   let pointElement = document.getElementById(`${type}Point${point}`);
+  let originalPoint = point;
   point = point * 4;
  
   if (type === "distance") {
@@ -178,12 +184,43 @@ function setPoint(point, height, type) {
     height = 1.15;
   }
   
+  let x2 = x + height * Math.cos(t);
+  let y2 = y + height * Math.sin(t);
+  
   pointElement.x1 = x;
   pointElement.y1 = y;
-  pointElement.x2 = x + height * Math.cos(t);
-  pointElement.y2 = y + height * Math.sin(t);
-  // console.log(`opacity is ${Math.max((height / maxLineHeight), .3)}`);
+  pointElement.x2 = x2;
+  pointElement.y2 = y2;
   pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
+  
+  if (type != "time") {
+    let restoreData = {
+      'x1': x,
+      'y1': y,
+      'x2': x2,
+      'y2': y2,
+    }
+
+    storePointToDevice(`${type}Point${originalPoint}`, restoreData);
+  }
+}
+
+function storePointToDevice(element, points) {
+  // Store points to device, so if the clockface is closed we can redraw
+  restoreData[element] = points;
+  
+  fs.writeFileSync("restorePoints.txt", restoreData, "json");
+}
+
+function restorePointsToDevice() {
+  for (const line in restoreData) {
+    let pointElement = document.getElementById(`${line}`);
+    
+    pointElement.x1 = restoreData[line].x1;
+    pointElement.y1 = restoreData[line].y1;
+    pointElement.x2 = restoreData[line].x2;
+    pointElement.y2 = restoreData[line].y2;
+  }
 }
 
 function resetPoints() {
@@ -222,6 +259,8 @@ function resetPoints() {
       utils.timePoints[e][j]['visible'] = false;
     }
   }
+  
+  restoreData = {};
 }
 
 function getCurrentPoint() {
