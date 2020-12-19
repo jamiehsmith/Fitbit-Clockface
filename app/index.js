@@ -119,6 +119,7 @@ if (initialize) {
   initialize = false;
   updateActivityLine();
   checkPreviousLines();
+  restoreData = fs.readFileSync("restorePoints.txt", "json");
   if (Object.keys(restoreData).length) {
     restorePointsToDevice();
   }
@@ -260,7 +261,9 @@ function resetPoints() {
     }
   }
   
+  console.log('resetting restore data!');
   restoreData = {};
+  fs.writeFileSync("restorePoints.txt", restoreData, "json");
 }
 
 function getCurrentPoint() {
@@ -281,7 +284,6 @@ function getCurrentPoint() {
 }
 
 function calculateLineHeight(total, type) {
-  console.log(`calculateLineHeight running with ${type}`);
   let lineHeight = 0;
   let max = maxSteps;
   if (type === "calories") {
@@ -365,12 +367,10 @@ async function setPreviousActivityLine(total, type) {
     setPoint(currentPoint, lineHeight, "step");
   } else if (type === "distance") {
     distanceThisPoint = today.adjusted.distance - total || 0;
-    console.log(`distanceThisPoint ${distanceThisPoint}`);
     lineHeight = calculateLineHeight(distanceThisPoint, "distance");
     setPoint(currentPoint, lineHeight, "distance");
   } else if (type === "floors") {
     floorsThisPoint = today.adjusted.elevationGain - total || 0;
-    console.log(`floorsThisPoint ${floorsThisPoint}`);
     lineHeight = calculateLineHeight(floorsThisPoint, "floors");
     setPoint(currentPoint, lineHeight, "floors");
   }
@@ -426,8 +426,6 @@ async function updateActivityLines() {
   date = new Date();
   hours = date.getHours();
   mins = date.getMinutes();
-  console.log(`hours are ${hours}`);
-  console.log(`mins are ${mins}`);
   if (hours === 0 && mins === 0) {
     // Current point is midnight, reset points
     resetPoints();
