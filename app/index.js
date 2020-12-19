@@ -7,6 +7,7 @@ import { display } from "display";
 import { HeartRateSensor } from "heart-rate";
 import { BodyPresenceSensor } from "body-presence";
 import { battery, charger } from "power";
+import * as fs from "fs";
 
 // Update the clock every minute
 clock.granularity = 'seconds';
@@ -14,7 +15,7 @@ clock.granularity = 'seconds';
 const timeLabel = document.getElementById("timeLabel");
 const secLabel = document.getElementById("secLabel");
 const dateLabel = document.getElementById("dateLabel");
-const dayLabel = document.getElementById("dayLabel");
+// const dayLabel = document.getElementById("dayLabel");
 const caloriesLabel = document.getElementById("caloriesLabel");
 const stepsLabel = document.getElementById("stepsLabel");
 const distanceLabel = document.getElementById("distanceLabel");
@@ -53,6 +54,7 @@ let date = new Date();
 let hours = date.getHours();
 let mins = date.getMinutes();
 let checkIfCorrectInterval;
+let restoreData = {};
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;
@@ -77,8 +79,8 @@ clock.ontick = (evt) => {
   
   let month = utils.formattedMonth()[today_dt.getMonth()];
   let weekday = utils.formattedDays()[today_dt.getDay()];
-  dayLabel.text = `${weekday}`;
-  dateLabel.text = `${month} ${day}`;
+  // dayLabel.text = `${weekday}`;
+  dateLabel.text = `${weekday} ${month} ${day}`;
 
   // Add calories label
   let calories = (today.adjusted.calories || 0).toLocaleString();
@@ -114,6 +116,10 @@ clock.ontick = (evt) => {
 
 if (initialize) {
   initialize = false;
+  restoreData = fs.readFileSync("restorePoints.txt", "json");
+  if (Object.keys(restoreData).length) {
+    restorePointsToDevice();
+  }
   updateActivityLine();
   checkPreviousLines();
 }
@@ -151,21 +157,51 @@ function setPoint(point, height, type) {
   let pointElement = document.getElementById(`${type}Point${point}`);
 
   var t = interval * point;
-  var r = 100;
+  var r = 110;
   var x = 148 + r * Math.cos(t)
-  var y = 148 + r * Math.sin(t)
+  var y = 154 + r * Math.sin(t)
   
   if (type === "time") {
     // Minimum height of 1 so bar is visible
     height = 1.15;
   }
   
+  let x2 = x + height * Math.cos(t);
+  let y2 = y + height * Math.sin(t);
+  
   pointElement.x1 = x;
   pointElement.y1 = y;
-  pointElement.x2 = x + height * Math.cos(t);
-  pointElement.y2 = y + height * Math.sin(t);
-  // console.log(`opacity is ${Math.max((height / maxLineHeight), .3)}`);
+  pointElement.x2 = x2;
+  pointElement.y2 = y2;
   pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
+  
+  if (type != "time") {
+    let restoreData = {
+      'x1': x,
+      'y1': y,
+      'x2': x2,
+      'y2': y2,
+    }
+    
+    storePointToDevice(`${type}Point${point}`, restoreData);
+  }
+}
+
+function storePointToDevice(element, points) {
+  // Store points to device, so if the clockface is closed we can redraw
+  restoreData[element] = points;
+  fs.writeFileSync("restorePoints.txt", restoreData, "json");
+}
+
+function restorePointsToDevice() {
+  for (const line in restoreData) {
+    let pointElement = document.getElementById(`${line}`);
+
+    pointElement.x1 = restoreData[line].x1;
+    pointElement.y1 = restoreData[line].y1;
+    pointElement.x2 = restoreData[line].x2;
+    pointElement.y2 = restoreData[line].y2;
+  }
 }
 
 function resetPoints() {
@@ -198,6 +234,9 @@ function resetPoints() {
       utils.timePoints[i][j]['visible'] = false;
     }
   }
+  
+  restoreData = {};
+  fs.writeFileSync("restorePoints.txt", restoreData, "json");
 }
 
 function getCurrentPoint() {
@@ -256,26 +295,25 @@ function updateActivityLine() {
 
   // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
-  caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
+  // caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
   setPoint(currentPoint, lineHeight, "calories");
   
   // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
-  stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
+  // stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
   lineHeight = calculateLineHeight(stepsThisPoint, "step");
   setPoint(currentPoint, lineHeight, "step");
   
   // Calculate distance since previous point
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
-  distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
+  // distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
   lineHeight = calculateLineHeight(distanceThisPoint, "distance");
   setPoint(currentPoint, lineHeight, "distance");
   
   // Calculate floors since previous point
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
-  console.log(`floorsThisPoint ${floorsThisPoint}`);
-  floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
+  // floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
   lineHeight = calculateLineHeight(floorsThisPoint, "floors");
   setPoint(currentPoint, lineHeight, "floors");
 
@@ -303,12 +341,10 @@ async function setPreviousActivityLine(total, type) {
     setPoint(currentPoint, lineHeight, "step");
   } else if (type === "distance") {
     distanceThisPoint = today.adjusted.distance - total || 0;
-    console.log(`distanceThisPoint ${distanceThisPoint}`);
     lineHeight = calculateLineHeight(distanceThisPoint, "distance");
     setPoint(currentPoint, lineHeight, "distance");
   } else if (type === "floors") {
     floorsThisPoint = today.adjusted.elevationGain - total || 0;
-    console.log(`floorsThisPoint ${floorsThisPoint}`);
     lineHeight = calculateLineHeight(floorsThisPoint, "floors");
     setPoint(currentPoint, lineHeight, "floors");
   }
