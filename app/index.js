@@ -117,12 +117,17 @@ clock.ontick = (evt) => {
 
 if (initialize) {
   initialize = false;
-  updateActivityLine();
-  checkPreviousLines();
   restoreData = fs.readFileSync("restorePoints.txt", "json");
+  const currentPoint = getCurrentPoint()['point'];
   if (Object.keys(restoreData).length) {
     restorePointsToDevice();
+    if (!restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`)) {
+      updateActivityLine();
+    }
+  } else {
+    updateActivityLine();
   }
+  checkPreviousLines();
 }
 
 if (!updatesScheduled) {
@@ -200,6 +205,7 @@ function setPoint(point, height, type) {
       'y1': y,
       'x2': x2,
       'y2': y2,
+      'height': height,
     }
 
     storePointToDevice(`${type}Point${originalPoint}`, restoreData);
@@ -225,7 +231,6 @@ function restorePointsToDevice() {
 }
 
 function resetPoints() {
-  console.log('resetPoints running');
   let coordinates = ['x1', 'y1', 'x2', 'y2'];
   let timePointElement;
   let stepPointElement;
@@ -261,7 +266,6 @@ function resetPoints() {
     }
   }
   
-  console.log('resetting restore data!');
   restoreData = {};
   fs.writeFileSync("restorePoints.txt", restoreData, "json");
 }
@@ -318,30 +322,38 @@ function updateActivityLine() {
   const currentLine = getCurrentPoint();
   const currentPoint = currentLine['point'];
   let lineHeight;
-
+  
   // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
   // caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
-  setPoint(currentPoint, lineHeight, "calories");
+  if ((restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`) && restoreData[`caloriesPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`)) {
+    setPoint(currentPoint, lineHeight, "calories");
+  }
   
   // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
   // stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
   lineHeight = calculateLineHeight(stepsThisPoint, "step");
-  setPoint(currentPoint, lineHeight, "step");
+  if ((restoreData.hasOwnProperty(`stepPoint${currentPoint}`) && restoreData[`stepPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`stepPoint${currentPoint}`)) {
+    setPoint(currentPoint, lineHeight, "step");
+  }
   
   // Calculate distance since previous point
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
   // distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
   lineHeight = calculateLineHeight(distanceThisPoint, "distance");
-  setPoint(currentPoint, lineHeight, "distance");
+  if ((restoreData.hasOwnProperty(`distancePoint${currentPoint}`) && restoreData[`distancePoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`distancePoint${currentPoint}`)) {
+    setPoint(currentPoint, lineHeight, "distance");
+  }
   
   // Calculate floors since previous point
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
   // floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
   lineHeight = calculateLineHeight(floorsThisPoint, "floors");
-  setPoint(currentPoint, lineHeight, "floors");
+  if ((restoreData.hasOwnProperty(`floorsPoint${currentPoint}`) && restoreData[`floorsPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`floorsPoint${currentPoint}`)) {
+   setPoint(currentPoint, lineHeight, "floors");
+  }
 
   currentLine['visible'] = true;
 }
