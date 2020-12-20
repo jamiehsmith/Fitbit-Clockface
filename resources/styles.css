@@ -8,6 +8,28 @@
   fill: #ffffff;
 }
 
+#weatherForecast {
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: end;
+  x: 92%;
+  y: 1%;
+  height: 20;
+  width: 20;
+  fill: #ffffff;
+}
+
+#weatherTemp {
+  font-size: 20;
+  font-family: Seville-Book;
+  text-length: 32;
+  text-anchor: end;
+  x: 91%;
+  y: 6%;
+  fill: #ffffff;
+}
+
 #timeLabel {
   font-size: 62;
   font-family: Seville-Book;
