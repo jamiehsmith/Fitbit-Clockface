@@ -7,6 +7,7 @@ import { display } from "display";
 import { HeartRateSensor } from "heart-rate";
 import { BodyPresenceSensor } from "body-presence";
 import { battery, charger } from "power";
+import { memory } from "system";
 import * as fs from "fs";
 import * as messaging from "messaging";
 
@@ -33,6 +34,7 @@ const batteryLabel = document.getElementById("batteryLabel");
 
 let weatherForecastImg = document.getElementById("weatherForecast");
 let weatherTemp = document.getElementById("weatherTemp");
+weatherTemp.text = '-- F';
 
 let stepsThisPoint = 0;
 let stepsOffset = today.adjusted.steps;
@@ -115,13 +117,18 @@ clock.ontick = (evt) => {
   }
   batteryLabel.text = batterLevelFmted;
   
+  const memoryLabel = document.getElementById("memoryLabel");
+  memoryLabel.text = `${(memory.js.used / memory.js.total).toFixed(2)}%`;
+  
   // For testing - update every second
   // updateActivityLine();
 }
 
 if (initialize) {
   initialize = false;
-  restoreData = fs.readFileSync("restorePoints.txt", "json");
+  if (fs.existsSync("restorePointsProd.txt")) {
+    restoreData = fs.readFileSync("restorePointsProd.txt", "json");
+  }
   const currentPoint = getCurrentPoint()['point'];
   
   if (restoreData && Object.keys(restoreData) && Object.keys(restoreData).length) {
@@ -172,7 +179,7 @@ function setPoint(point, height, type) {
   var t = interval * point;
   var r = 110;
   var x = 148 + r * Math.cos(t)
-  var y = 154 + r * Math.sin(t)
+  var y = 166 + r * Math.sin(t)
   
   if (type === "time") {
     // Minimum height of 1 so bar is visible
@@ -204,7 +211,7 @@ function setPoint(point, height, type) {
 function storePointToDevice(element, points) {
   // Store points to device, so if the clockface is closed we can redraw
   restoreData[element] = points;
-  fs.writeFileSync("restorePoints.txt", restoreData, "json");
+  fs.writeFileSync("restorePointsProd.txt", restoreData, "json");
 }
 
 function restorePointsToDevice() {
@@ -226,14 +233,14 @@ function resetPoints() {
   let distancePointElement;
   let floorsPointElement;
 
-  const pointElements = [timePointElement, stepPointElement,
-    caloriesPointElement, distancePointElement, floorsPointElement];
   for (let i = 1; i <= dotCount; i++) {
     timePointElement = document.getElementById(`timePoint${i}`);
     stepPointElement = document.getElementById(`stepPoint${i}`);
     caloriesPointElement = document.getElementById(`caloriesPoint${i}`);
     distancePointElement = document.getElementById(`distancePoint${i}`);
     floorsPointElement = document.getElementById(`floorsPoint${i}`);
+    
+    const pointElements = [timePointElement, stepPointElement, caloriesPointElement, distancePointElement, floorsPointElement];
 
     for (let p = 0; p < pointElements.length; p++) {
       for (let c = 0; c < coordinates.length; c++) {
@@ -243,14 +250,14 @@ function resetPoints() {
     }
   }
 
-  for (var i = 0; i <= 23; i++) {
+  for (var x = 0; x <= 23; x++) {
     for (var j = 0; j < timePointInts.length; j++) {
-      utils.timePoints[i][j]['visible'] = false;
+      utils.timePoints[x][timePointInts[j]]['visible'] = false;
     }
   }
   
   restoreData = {};
-  fs.writeFileSync("restorePoints.txt", restoreData, "json");
+  fs.writeFileSync("restorePointsProd.txt", restoreData, "json");
 }
 
 function getCurrentPoint() {
@@ -520,15 +527,21 @@ function fetchWeather() {
 }
 
 function processWeatherData(data) {
-  console.log('data is', JSON.stringify(data));
-  // weatherForecast.text = data.forecast;
   let displayTemp = Math.round(data.temperature);
-  weatherTemp.text = `${displayTemp} ${data.temp_unit}`;
+  // let displayTemp = 9;
+  weatherTemp.text = `${displayTemp}${data.temp_unit}`;
   
   const nowHours = new Date().getHours();
   const isDaytime = nowHours > 6 && nowHours < 18;
-  console.log('is day?', isDaytime);
   weatherForecastImg.href = utils.getWeatherIcon(data.id, isDaytime);
+  // let temperateure = 9;
+  // if (temperature < 10) {
+  //   weatherForecastImg.x = 310;
+  // } else if (temperature < 99) {
+  //   weatherForecastImg.x = 290;
+  // } else {
+  //   weatherForecastImg.x = 220;
+  // }
 }
 
 // Listen for the onopen event
