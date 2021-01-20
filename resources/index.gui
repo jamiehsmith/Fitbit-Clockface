@@ -501,6 +501,7 @@
 <text id="azmLabel" />
 <text id="heartRateLabel" />
 <text id="batteryLabel" />
+<text id="memoryLabel" />
 
 <!-- <text id="weatherForecast"/> -->
 <image id="weatherForecast"/>
