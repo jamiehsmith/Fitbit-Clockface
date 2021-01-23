@@ -188,12 +188,13 @@ function setPoint(point, height, type) {
   
   let x2 = parseInt(x + height * Math.cos(t), 10);
   let y2 = parseInt(y + height * Math.sin(t), 10);
+  let opacity = Math.max((height / maxLineHeight), .3);
   
   pointElement.x1 = x;
   pointElement.y1 = y;
   pointElement.x2 = x2;
   pointElement.y2 = y2;
-  pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
+  pointElement.style.opacity = opacity;
  
   if (type != "time") {
     let itemRestoreData = {
@@ -201,7 +202,7 @@ function setPoint(point, height, type) {
       'y1': y,
       'x2': x2,
       'y2': y2,
-      'height': height,
+      'opacity': opacity,
     }
 
     storePointToDevice(`${type}Point${point}`, itemRestoreData);
@@ -215,13 +216,19 @@ function storePointToDevice(element, points) {
 }
 
 function restorePointsToDevice() {
+  let pointTypes = ['x1', 'y1', 'x2', 'y2', 'opacity']
   for (const line in restoreData) {
     let pointElement = document.getElementById(`${line}`);
 
-    pointElement.x1 = restoreData[line].x1;
-    pointElement.y1 = restoreData[line].y1;
-    pointElement.x2 = restoreData[line].x2;
-    pointElement.y2 = restoreData[line].y2;
+    for (let i = 0; i < pointTypes.length; i++) {
+      if (pointTypes[i] in restoreData[line]) {
+        if (pointTypes[i] !== 'opacity') {
+          pointElement[pointTypes[i]] = restoreData[line][pointTypes[i]]
+        } else {
+          pointElement['style'][pointTypes[i]] = restoreData[line][pointTypes[i]];
+        }
+      }
+    }
   }
 }
 
