@@ -245,7 +245,7 @@ function resetPoints() {
       for (let c = 0; c < coordinates.length; c++) {
         pointElements[p][c] = 149;
       }
-      // pointElements[p]['style']['opacity'] = 1;
+      pointElements[p]['style']['opacity'] = 1;
     }
   }
 
