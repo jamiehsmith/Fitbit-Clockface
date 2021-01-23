@@ -126,8 +126,8 @@ clock.ontick = (evt) => {
 
 if (initialize) {
   initialize = false;
-  if (fs.existsSync("restorePointsProd.txt")) {
-    restoreData = fs.readFileSync("restorePointsProd.txt", "json");
+  if (fs.existsSync("restoreActivityLines.txt")) {
+    restoreData = fs.readFileSync("restoreActivityLines.txt", "json");
   }
   const currentPoint = getCurrentPoint()['point'];
   
@@ -178,40 +178,40 @@ function setPoint(point, height, type) {
 
   var t = interval * point;
   var r = 110;
-  var x = 148 + r * Math.cos(t)
-  var y = 166 + r * Math.sin(t)
+  var x = parseInt(148 + r * Math.cos(t), 10)
+  var y = parseInt(166 + r * Math.sin(t), 10)
   
   if (type === "time") {
     // Minimum height of 1 so bar is visible
     height = 1.15;
   }
   
-  let x2 = x + height * Math.cos(t);
-  let y2 = y + height * Math.sin(t);
+  let x2 = parseInt(x + height * Math.cos(t), 10);
+  let y2 = parseInt(y + height * Math.sin(t), 10);
   
   pointElement.x1 = x;
   pointElement.y1 = y;
   pointElement.x2 = x2;
   pointElement.y2 = y2;
-  // pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
-  
+  pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
+ 
   if (type != "time") {
-    let restoreData = {
+    let itemRestoreData = {
       'x1': x,
       'y1': y,
       'x2': x2,
       'y2': y2,
       'height': height,
     }
-    
-    storePointToDevice(`${type}Point${point}`, restoreData);
+
+    storePointToDevice(`${type}Point${point}`, itemRestoreData);
   }
 }
 
 function storePointToDevice(element, points) {
   // Store points to device, so if the clockface is closed we can redraw
   restoreData[element] = points;
-  fs.writeFileSync("restorePointsProd.txt", restoreData, "json");
+  fs.writeFileSync("restoreActivityLines.txt", restoreData, "json");
 }
 
 function restorePointsToDevice() {
@@ -257,7 +257,7 @@ function resetPoints() {
   }
   
   restoreData = {};
-  fs.writeFileSync("restorePointsProd.txt", restoreData, "json");
+  fs.writeFileSync("restoreActivityLines.txt", restoreData, "json");
 }
 
 function getCurrentPoint() {
