@@ -183,7 +183,7 @@ function setPoint(point, height, type) {
   
   if (type === "time") {
     // Minimum height of 1 so bar is visible
-    height = 1.15;
+    height = 1.5;
   }
   
   let x2 = parseInt(x + height * Math.cos(t), 10);
