@@ -53,15 +53,29 @@ const maxFloors = 10;
 let initialize = true;
 let updatesScheduled = false;
 let updatesRunning = false;
-const dotCount = 96;
-const interval = (Math.PI * 2) / dotCount;
+const dotCount = 95;
+const interval = (Math.PI * 2) / (dotCount + 1);
 const timePointInts = [0, 15, 30, 45];
 let date = new Date();
 let hours = date.getHours();
 let mins = date.getMinutes();
 let checkIfCorrectInterval;
-let restoreData = {};
-let restoredPoint = false;
+
+// Points
+let pointHeightBuffer = new ArrayBuffer(1 * 96);
+let caloriesPointHeights = new Uint8Array(pointHeightBuffer);
+// let stepPointHeights = new Uint8Array(pointHeightBuffer);
+// let distancePointHeights = new Uint8Array(pointHeightBuffer);
+// let floorsPointHeights = new Uint8Array(pointHeightBuffer);
+// Opacities
+// let opacityBuffer = new ArrayBuffer(4 * 96);
+// let caloriesPointOpacity = new Uint32Array(opacityBuffer);
+// let stepPointOpacity = new Uint32Array(opacityBuffer);
+// let distancePointOpacity = new Uint32Array(opacityBuffer);
+// let floorsPointOpacity = new Uint32Array(opacityBuffer);
+// Read buffers
+let pointHeightFile = new Uint8Array(pointHeightBuffer);
+// let opacityFile = new Uint32Array(opacityBuffer);
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;
@@ -126,26 +140,14 @@ clock.ontick = (evt) => {
 
 if (initialize) {
   initialize = false;
-  if (fs.existsSync("restoreActivityLines.txt")) {
-    restoreData = fs.readFileSync("restoreActivityLines.txt", "json");
-  }
-  const currentPoint = getCurrentPoint()['point'];
-  
-  if (restoreData && Object.keys(restoreData) && Object.keys(restoreData).length) {
-    restorePointsToDevice();
-    if (!restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`)) {
-      updateActivityLine();
-    } else {
-      restoredPoint = true;
-    }
-  } else {
-    updateActivityLine();
-  }
+  utils.deleteAllFiles();
+  updateActivityLine();
   checkPreviousLines();
 }
 
 if (!updatesScheduled) {
   checkIfCorrectInterval = setInterval(function() {
+    console.log('checkifcorrectinteval running');
     // Every minute
     date = new Date();
     hours = date.getHours();
@@ -156,10 +158,13 @@ if (!updatesScheduled) {
     display.on = false;
     
     if (mins === 0 || mins === 15 || mins === 30 || mins === 45) {
+      console.log('time is right!');
       // Start automated line drawing we're on a 15 minute interval
       updatesScheduled = true;
       updateActivityLines();
       drawActivityLines();
+    } else {
+      console.log('time is not right, mins', mins);
     }
   }, 60000);
 }
@@ -188,32 +193,15 @@ function setPoint(point, height, type) {
   
   let x2 = parseInt(x + height * Math.cos(t), 10);
   let y2 = parseInt(y + height * Math.sin(t), 10);
-  let opacity = Math.max((height / maxLineHeight), .3);
+  let opacity = calculateLineOpacity(height);
   
   pointElement.x1 = x;
   pointElement.y1 = y;
   pointElement.x2 = x2;
   pointElement.y2 = y2;
   pointElement.style.opacity = opacity;
- 
-  if (type != "time") {
-    let itemRestoreData = {
-      'x1': x,
-      'y1': y,
-      'x2': x2,
-      'y2': y2,
-      'opacity': opacity,
-    }
-
-    storePointToDevice(`${type}Point${point}`, itemRestoreData);
-  }
 }
 
-function storePointToDevice(element, points) {
-  // Store points to device, so if the clockface is closed we can redraw
-  restoreData[element] = points;
-  fs.writeFileSync("restoreActivityLines.txt", restoreData, "json");
-}
 
 function restorePointsToDevice() {
   let pointTypes = ['x1', 'y1', 'x2', 'y2', 'opacity']
@@ -240,7 +228,7 @@ function resetPoints() {
   let distancePointElement;
   let floorsPointElement;
 
-  for (let i = 1; i <= dotCount; i++) {
+  for (let i = 0; i <= dotCount; i++) {
     timePointElement = document.getElementById(`timePoint${i}`);
     stepPointElement = document.getElementById(`stepPoint${i}`);
     caloriesPointElement = document.getElementById(`caloriesPoint${i}`);
@@ -262,9 +250,6 @@ function resetPoints() {
       utils.timePoints[x][timePointInts[j]]['visible'] = false;
     }
   }
-  
-  restoreData = {};
-  fs.writeFileSync("restoreActivityLines.txt", restoreData, "json");
 }
 
 function getCurrentPoint() {
@@ -306,6 +291,10 @@ function calculateLineHeight(total, type) {
   return lineHeight;
 }
 
+function calculateLineOpacity(height) {
+  return Math.max((height / maxLineHeight), .3);
+}
+
 function addActivityLine(point = null) {
   if (!point) {
     point = getCurrentPoint();
@@ -322,70 +311,97 @@ function updateActivityLine() {
 
   // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
-  // caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
-  if (!restoredPoint || (restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`) && restoreData[`caloriesPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`)) {
-    setPoint(currentPoint, lineHeight, "calories");
-  }
+  setPoint(currentPoint, lineHeight, "calories");
   
   // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
-  // stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
   lineHeight = calculateLineHeight(stepsThisPoint, "step");
-  if (!restoredPoint || (restoreData.hasOwnProperty(`stepPoint${currentPoint}`) && restoreData[`stepPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`stepPoint${currentPoint}`)) {
-    setPoint(currentPoint, lineHeight, "step");
-  }
+  setPoint(currentPoint, lineHeight, "step");
   
   // Calculate distance since previous point
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
-  // distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
   lineHeight = calculateLineHeight(distanceThisPoint, "distance");
-  if (!restoredPoint || (restoreData.hasOwnProperty(`distancePoint${currentPoint}`) && restoreData[`distancePoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`distancePoint${currentPoint}`)) {
-    setPoint(currentPoint, lineHeight, "distance");
-  }
-  
+  setPoint(currentPoint, lineHeight, "distance");
+
   // Calculate floors since previous point
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
-  // floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
   lineHeight = calculateLineHeight(floorsThisPoint, "floors");
-  if (!restoredPoint || (restoreData.hasOwnProperty(`floorsPoint${currentPoint}`) && restoreData[`floorsPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`floorsPoint${currentPoint}`)) {
-    setPoint(currentPoint, lineHeight, "floors");
-  }
+  setPoint(currentPoint, lineHeight, "floors");
 
   currentLine['visible'] = true;
 }
 
 async function setPreviousActivityLine(total, type) {
+  console.log('SET PREVIOUS ACTIVITY LINE RUNNING')
   const currentLine = getCurrentPoint();
   const currentPoint = currentLine['point'];
-  let lineHeight;
   
-  if (currentPoint > 1 && currentPoint <= 96) {
-    currentPoint--;
-  } else if (currentPoint === 1) {
-    currentPoint = 96;
-  }
+  // if (currentPoint > 0 && currentPoint <= 95) {
+  //   currentPoint--;
+  // } else if (currentPoint === 0) {
+  //   currentPoint = 95;
+  // }
+  
+  currentPoint = 2;
+  
+  console.log('currentpoint is', currentPoint);
+  
+  let totalThisPoint;
 
   if (type === "calories") {
-    caloriesThisPoint = today.adjusted.calories - total || 0;
-    lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
-    setPoint(currentPoint, lineHeight, "calories");
+    totalThisPoint = today.adjusted.calories - total || 0;
   } else if (type === "step") {
-    stepsThisPoint = today.adjusted.steps - total || 0;
-    lineHeight = calculateLineHeight(stepsThisPoint, "step");
-    setPoint(currentPoint, lineHeight, "step");
+    totalThisPoint = today.adjusted.steps - total || 0;
   } else if (type === "distance") {
-    distanceThisPoint = today.adjusted.distance - total || 0;
-    lineHeight = calculateLineHeight(distanceThisPoint, "distance");
-    setPoint(currentPoint, lineHeight, "distance");
+    totalThisPoint = today.adjusted.distance - total || 0;
   } else if (type === "floors") {
-    floorsThisPoint = today.adjusted.elevationGain - total || 0;
-    lineHeight = calculateLineHeight(floorsThisPoint, "floors");
-    setPoint(currentPoint, lineHeight, "floors");
+    totalThisPoint = today.adjusted.elevationGain - total || 0;
   }
-
-  currentLine['visible'] = true;
   
+  const lineHeight = calculateLineHeight(totalThisPoint, type);
+  setPoint(currentPoint, lineHeight, type);
+  currentLine['visible'] = true;
+
+  let fileNames = [];
+  console.log('about to set buffers...');
+  
+  if (type === "calories") {
+    console.log('adding to calorie buffer!!', lineHeight);
+    caloriesPointHeights[currentPoint] = lineHeight;
+    writeFile('caloriesPointHeights.bin', caloriesPointHeights);
+    // fileNames.push({file: 'caloriesPointHeights.bin', buffer: caloriesPointHeights});
+  //   caloriesPointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
+  //   // fileNames.push({file: 'caloriesPointOpacities.bin', buffer: caloriesPointOpacity});
+  //   writeFile('caloriesPointOpacities.bin', caloriesPointOpacity);
+  // } else if (type === "step") {
+  //   stepPointHeights[currentPoint] = lineHeight;
+  //   // fileNames.push({file: 'stepPointHeights.bin', buffer: stepPointHeights});
+  //   writeFile('stepPointHeights.bin', stepPointHeights);
+  //   stepPointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
+  //   // fileNames.push({file: 'stepPointOpacities.bin', buffer: stepPointOpacity});
+  //   writeFile('stepPointOpacities.bin', stepPointOpacity);
+  // } else if (type === "distance") {
+  //   distancePointHeights[currentPoint] = lineHeight;
+  //   // fileNames.push({file: 'distancePointHeights.bin', buffer: distancePointHeights});
+  //   writeFile('distancePointHeights.bin', distancePointHeights);
+  //   distancePointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
+  //   // fileNames.push({file: 'distancePointOpacities.bin', buffer: distancePointOpacity});
+  //   writeFile('distancePointOpacities.bin', distancePointOpacity);
+  // } else if (type === "floors") {
+  //   floorsPointHeights[currentPoint] = lineHeight;
+  //   // fileNames.push({file: 'floorsPointHeights.bin', buffer: floorsPointHeights});
+  //   writeFile('floorsPointHeights.bin', floorsPointHeights);
+  //   floorsPointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
+  //   // fileNames.push({file: 'floorsPointOpacities.bin', buffer: floorsPointOpacity});
+  //   writeFile('floorsPointOpacities.bin', floorsPointOpacity);
+  }
+  
+  // for (let i = 0; i < fileNames.length; i++) {
+  //   let file = fileNames[i];
+  //   writeFile(file.file, file.buffer);
+  // }
+
   return;
 }
 
@@ -431,26 +447,37 @@ function checkPreviousLines() {
 }
 
 async function updateActivityLines() {
+  console.log('updateactivitylines running!!');
   updatesRunning = true;
   date = new Date();
   hours = date.getHours();
   mins = date.getMinutes();
-  if (restoredPoint) {
-    restoredPoint = false;
-  }
+
   if (hours === 0 && mins === 0) {
+    console.log('its midnight');
     // Current point is midnight, reset points
     resetPoints();
   } else {
+    console.log('were calling set previous activity lines');
     // Set final count for previous line
-    await setPreviousActivityLine(caloriesOffset, "calorie");
+    await setPreviousActivityLine(caloriesOffset, "calories");
     await setPreviousActivityLine(stepsOffset, "step");
     await setPreviousActivityLine(distanceOffset, "distance");
     await setPreviousActivityLine(floorsOffset, "floors");
 
     // checkPreviousLines();
   }
-
+  
+  // Read file testing
+  readFile('caloriesPointHeights.bin', pointHeightBuffer, 'point');
+  // readFile('caloriesPointOpacities.bin', opacityBuffer, 'opacity');
+  // readFile('stepPointHeights.bin', pointHeightBuffer, 'point');
+  // readFile('stepPointOpacities.bin', opacityBuffer, 'opacity');
+  // readFile('distancePointHeights.bin', pointHeightBuffer, 'point');
+  // readFile('distancePointOpacities.bin', opacityBuffer, 'opacity');
+  // readFile('floorsPointHeights.bin', pointHeightBuffer, 'point');
+  // readFile('floorsPointOpacities.bin', opacityBuffer, 'opacity');
+  
   // Reset steps
   stepsThisPoint = 0;
   stepsOffset = today.adjusted.steps;
@@ -482,6 +509,27 @@ function drawActivityLines() {
 
     updateActivityLines();
   }, 900000);
+}
+
+function writeFile(fileName, fileBuffer) {
+  console.log('writefile running!!!!');
+  let file = fs.openSync(fileName, "a+");
+  fs.writeSync(file, fileBuffer); // write the record
+  fs.closeSync(file); // and commit changes -- important if you are about to read from the file
+}
+
+function readFile(fileName, fileBuffer, typeView) {
+  console.log('readfile running!!!!');
+  let file = fs.openSync(fileName, "r");
+  // let buffer = new ArrayBuffer(1 * 96);
+  fs.readSync(file, fileBuffer);
+  if (typeView === 'point') {
+    let data = new Uint8Array(fileBuffer);
+  } else {
+    let data = new Uint32Array(fileBuffer);
+  }
+  console.log('data is' + JSON.stringify(data))
+  fs.closeSync(file);
 }
 
 display.onchange = function() {

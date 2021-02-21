@@ -5,6 +5,7 @@
 <text id="dateLabel" />
 
 <!-- Time lines -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint0" fill="white"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint1" fill="white"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint2" fill="white"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint3" fill="white"></line>
@@ -100,9 +101,9 @@
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint93" fill="white"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint94" fill="white"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint95" fill="white"></line>
-<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="timePoint96" fill="white"></line>
 
 <!-- Steps -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint0" fill="#FFBE0B"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint1" fill="#FFBE0B"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint2" fill="#FFBE0B"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint3" fill="#FFBE0B"></line>
@@ -198,9 +199,9 @@
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint93" fill="#FFBE0B"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint94" fill="#FFBE0B"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint95" fill="#FFBE0B"></line>
-<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="stepPoint96" fill="#FFBE0B"></line>
 
 <!-- Distance -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint0" fill="#8338EC"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint1" fill="#8338EC"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint2" fill="#8338EC"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint3" fill="#8338EC"></line>
@@ -296,9 +297,9 @@
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint93" fill="#8338EC"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint94" fill="#8338EC"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint95" fill="#8338EC"></line>
-<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="distancePoint96" fill="#8338EC"></line>
 
 <!-- Calories -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint0" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint1" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint2" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint3" fill="#FB5607"></line>
@@ -394,9 +395,9 @@
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint93" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint94" fill="#FB5607"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint95" fill="#FB5607"></line>
-<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="caloriesPoint96" fill="#FB5607"></line>
 
 <!-- Floors -->
+<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint0" fill="#3A86FF"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint1" fill="#3A86FF"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint2" fill="#3A86FF"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint3" fill="#3A86FF"></line>
@@ -492,7 +493,6 @@
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint93" fill="#3A86FF"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint94" fill="#3A86FF"></line>
 <line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint95" fill="#3A86FF"></line>
-<line x1="149" y1="149" x2="149" y2="149" stroke-width="3" stroke-linecap="round" id="floorsPoint96" fill="#3A86FF"></line>
 
 <text id="caloriesLabel" />
 <text id="stepsLabel" />

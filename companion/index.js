@@ -125,6 +125,7 @@ function restoreSettings() {
   }
 }
 
+
 // Message socket opens
 messaging.peerSocket.onopen = () => {
   restoreSettings();
