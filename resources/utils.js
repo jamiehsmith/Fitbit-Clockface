@@ -6,6 +6,7 @@
 //   return i;
 // }
 
+import * as fs from "fs";
 
 // Add zero in front of numbers < 10
 export function zeroPad(i) {
@@ -227,4 +228,35 @@ export function getWeatherIcon(code, day) {
             default: return "";
         }
     }
+}
+
+// Get all file names from the device. Return an array
+export function getDeviceFileNames() {
+  let deviceFiles = [];
+  try {    
+    const listDir = fs.listDirSync("/private/data/");
+    let fileObj = listDir.next();
+    while (!fileObj.done) {
+      deviceFiles.push(fileObj.value);
+      fileObj = listDir.next();
+    }
+  } catch(err) {
+    console.log("Error: Couldn't get the file: " + err);
+  }
+  console.log(`device files are ${deviceFiles}`)
+  return deviceFiles;
+}
+
+// Delete all files from the device
+export function deleteAllFiles() {
+  try {
+    let deviceFiles = getDeviceFileNames();
+    for (let idx in deviceFiles) {
+      let tempFile = deviceFiles[idx];
+      fs.unlinkSync(tempFile);
+      console.log("File " + tempFile + " deleted.");
+    }
+  } catch(err) {
+    console.log("Error: File doesn't exist");
+  }
 }

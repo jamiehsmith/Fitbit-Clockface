@@ -120,16 +120,6 @@
   fill: #00ff00;
 }
 
-#memoryLabel {
-  font-size: 25;
-  font-family: Seville-Book;
-  text-length: 32;
-  text-anchor: start;
-  x: 40;
-  y: 20%;
-  fill: #ffa500;
-}
-
 .statsIcon {
   height: 20;
   width: 20;

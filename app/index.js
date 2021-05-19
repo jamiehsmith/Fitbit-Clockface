@@ -62,8 +62,8 @@ let mins = date.getMinutes();
 let checkIfCorrectInterval;
 
 // Points
-let pointHeightBuffer = new ArrayBuffer(1 * 96);
-let caloriesPointHeights = new Uint8Array(pointHeightBuffer);
+// let pointHeightBuffer = new ArrayBuffer(1 * 96);
+// let caloriesPointHeights = new Uint8Array(pointHeightBuffer);
 // let stepPointHeights = new Uint8Array(pointHeightBuffer);
 // let distancePointHeights = new Uint8Array(pointHeightBuffer);
 // let floorsPointHeights = new Uint8Array(pointHeightBuffer);
@@ -74,8 +74,27 @@ let caloriesPointHeights = new Uint8Array(pointHeightBuffer);
 // let distancePointOpacity = new Uint32Array(opacityBuffer);
 // let floorsPointOpacity = new Uint32Array(opacityBuffer);
 // Read buffers
-let pointHeightFile = new Uint8Array(pointHeightBuffer);
+// let pointHeightFile = new Uint8Array(pointHeightBuffer);
 // let opacityFile = new Uint32Array(opacityBuffer);
+
+let pointsBuffer = new ArrayBuffer(4 * 4 * 96);
+let pointsView = new Uint32Array(pointsBuffer);
+let pointsRead = new Uint32Array(pointsBuffer);
+let fileName;
+
+const bufferPos = {
+  'calories': '',
+  'steps': 1,
+  'distance': 2,
+  'floors': 3,
+}
+
+const readBufferPos = {
+  0: 'calories',
+  100: 'steps',
+  200: 'distance',
+  300: 'floors',
+}
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;
@@ -140,14 +159,18 @@ clock.ontick = (evt) => {
 
 if (initialize) {
   initialize = false;
-  utils.deleteAllFiles();
   updateActivityLine();
   checkPreviousLines();
+  fileSetup();
+}
+
+async function fileSetup() {
+  await restorePreviousLines();
+  await makeNewFile();
 }
 
 if (!updatesScheduled) {
-  checkIfCorrectInterval = setInterval(function() {
-    console.log('checkifcorrectinteval running');
+  checkIfCorrectInterval = setInterval(async function() {
     // Every minute
     date = new Date();
     hours = date.getHours();
@@ -158,14 +181,13 @@ if (!updatesScheduled) {
     display.on = false;
     
     if (mins === 0 || mins === 15 || mins === 30 || mins === 45) {
-      console.log('time is right!');
       // Start automated line drawing we're on a 15 minute interval
       updatesScheduled = true;
       updateActivityLines();
       drawActivityLines();
-    } else {
-      console.log('time is not right, mins', mins);
     }
+    
+    writeFile(pointsView);
   }, 60000);
 }
 
@@ -179,7 +201,18 @@ if (!updatesScheduled) {
 // }
 
 function setPoint(point, height, type) {
+  console.log(`setPoint called point: ${point} height: ${height} type: ${type}`);
+  if (height === 0 && type !== 'time') {
+    return;
+  }
+  // if (type !== 'time') {
+    // console.log(`SET POINT CALLED WITH ${point} ${height} ${type}`)
+  // }
+ 
   let pointElement = document.getElementById(`${type}Point${point}`);
+  // if (type !== 'time') {
+    // console.log(`point element is ${type}Point${point}`);
+  // }
 
   var t = interval * point;
   var r = 110;
@@ -194,12 +227,18 @@ function setPoint(point, height, type) {
   let x2 = parseInt(x + height * Math.cos(t), 10);
   let y2 = parseInt(y + height * Math.sin(t), 10);
   let opacity = calculateLineOpacity(height);
+  // console.log(`x: ${x}, x2; ${x2}, y: ${y}, y2: ${y2}, opacity: ${opacity}`);
   
   pointElement.x1 = x;
   pointElement.y1 = y;
   pointElement.x2 = x2;
   pointElement.y2 = y2;
   pointElement.style.opacity = opacity;
+  
+  if (type !== 'time' && height !== 0) {
+    console.log(`setting point buffer!! ${bufferPos[type]}${point} - ${Math.round(height)}`)
+    pointsView[`${bufferPos[type]}${point}`] = Math.round(height);
+  }
 }
 
 
@@ -292,7 +331,7 @@ function calculateLineHeight(total, type) {
 }
 
 function calculateLineOpacity(height) {
-  return Math.max((height / maxLineHeight), .3);
+  return Math.min(Math.max((height / maxLineHeight), .3), 1);
 }
 
 function addActivityLine(point = null) {
@@ -312,40 +351,35 @@ function updateActivityLine() {
   // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
-  setPoint(currentPoint, lineHeight, "calories");
+  setPoint(currentPoint, lineHeight, 'calories');
   
   // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
-  lineHeight = calculateLineHeight(stepsThisPoint, "step");
-  setPoint(currentPoint, lineHeight, "step");
+  lineHeight = calculateLineHeight(stepsThisPoint, "steps");
+  setPoint(currentPoint, lineHeight, 'steps');
   
   // Calculate distance since previous point
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
   lineHeight = calculateLineHeight(distanceThisPoint, "distance");
-  setPoint(currentPoint, lineHeight, "distance");
+  setPoint(currentPoint, lineHeight, 'distance');
 
   // Calculate floors since previous point
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
   lineHeight = calculateLineHeight(floorsThisPoint, "floors");
-  setPoint(currentPoint, lineHeight, "floors");
+  setPoint(currentPoint, lineHeight, 'floors');
 
   currentLine['visible'] = true;
 }
 
-async function setPreviousActivityLine(total, type) {
-  console.log('SET PREVIOUS ACTIVITY LINE RUNNING')
+function setPreviousActivityLine(total, type) {
   const currentLine = getCurrentPoint();
   const currentPoint = currentLine['point'];
   
-  // if (currentPoint > 0 && currentPoint <= 95) {
-  //   currentPoint--;
-  // } else if (currentPoint === 0) {
-  //   currentPoint = 95;
-  // }
-  
-  currentPoint = 2;
-  
-  console.log('currentpoint is', currentPoint);
+  if (currentPoint > 0 && currentPoint <= 95) {
+    currentPoint--;
+  } else if (currentPoint === 0) {
+    currentPoint = 95;
+  }
   
   let totalThisPoint;
 
@@ -362,46 +396,11 @@ async function setPreviousActivityLine(total, type) {
   const lineHeight = calculateLineHeight(totalThisPoint, type);
   setPoint(currentPoint, lineHeight, type);
   currentLine['visible'] = true;
-
-  let fileNames = [];
-  console.log('about to set buffers...');
-  
-  if (type === "calories") {
-    console.log('adding to calorie buffer!!', lineHeight);
-    caloriesPointHeights[currentPoint] = lineHeight;
-    writeFile('caloriesPointHeights.bin', caloriesPointHeights);
-    // fileNames.push({file: 'caloriesPointHeights.bin', buffer: caloriesPointHeights});
-  //   caloriesPointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
-  //   // fileNames.push({file: 'caloriesPointOpacities.bin', buffer: caloriesPointOpacity});
-  //   writeFile('caloriesPointOpacities.bin', caloriesPointOpacity);
-  // } else if (type === "step") {
-  //   stepPointHeights[currentPoint] = lineHeight;
-  //   // fileNames.push({file: 'stepPointHeights.bin', buffer: stepPointHeights});
-  //   writeFile('stepPointHeights.bin', stepPointHeights);
-  //   stepPointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
-  //   // fileNames.push({file: 'stepPointOpacities.bin', buffer: stepPointOpacity});
-  //   writeFile('stepPointOpacities.bin', stepPointOpacity);
-  // } else if (type === "distance") {
-  //   distancePointHeights[currentPoint] = lineHeight;
-  //   // fileNames.push({file: 'distancePointHeights.bin', buffer: distancePointHeights});
-  //   writeFile('distancePointHeights.bin', distancePointHeights);
-  //   distancePointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
-  //   // fileNames.push({file: 'distancePointOpacities.bin', buffer: distancePointOpacity});
-  //   writeFile('distancePointOpacities.bin', distancePointOpacity);
-  // } else if (type === "floors") {
-  //   floorsPointHeights[currentPoint] = lineHeight;
-  //   // fileNames.push({file: 'floorsPointHeights.bin', buffer: floorsPointHeights});
-  //   writeFile('floorsPointHeights.bin', floorsPointHeights);
-  //   floorsPointOpacity[currentPoint] = calculateLineOpacity(lineHeight);
-  //   // fileNames.push({file: 'floorsPointOpacities.bin', buffer: floorsPointOpacity});
-  //   writeFile('floorsPointOpacities.bin', floorsPointOpacity);
+  if (type !== 'time') {
+    console.log(`SETTING POINT ${bufferPos[type]}${currentPoint}`);
+    pointsView[`${bufferPos[type]}${currentPoint}`] = lineHeight + calculateLineOpacity(lineHeight);
   }
   
-  // for (let i = 0; i < fileNames.length; i++) {
-  //   let file = fileNames[i];
-  //   writeFile(file.file, file.buffer);
-  // }
-
   return;
 }
 
@@ -447,7 +446,7 @@ function checkPreviousLines() {
 }
 
 async function updateActivityLines() {
-  console.log('updateactivitylines running!!');
+  // console.log('updateactivitylines running!!');
   updatesRunning = true;
   date = new Date();
   hours = date.getHours();
@@ -458,25 +457,21 @@ async function updateActivityLines() {
     // Current point is midnight, reset points
     resetPoints();
   } else {
-    console.log('were calling set previous activity lines');
+    console.log('SETTING PREVIOUS ACTIVITY LINES');
     // Set final count for previous line
     await setPreviousActivityLine(caloriesOffset, "calories");
-    await setPreviousActivityLine(stepsOffset, "step");
+    await setPreviousActivityLine(stepsOffset, "steps");
     await setPreviousActivityLine(distanceOffset, "distance");
     await setPreviousActivityLine(floorsOffset, "floors");
+    
+    console.log(`writing file!! points view ${pointsView}`);
+    writeFile(pointsView);
 
-    // checkPreviousLines();
+    checkPreviousLines();
   }
   
   // Read file testing
-  readFile('caloriesPointHeights.bin', pointHeightBuffer, 'point');
-  // readFile('caloriesPointOpacities.bin', opacityBuffer, 'opacity');
-  // readFile('stepPointHeights.bin', pointHeightBuffer, 'point');
-  // readFile('stepPointOpacities.bin', opacityBuffer, 'opacity');
-  // readFile('distancePointHeights.bin', pointHeightBuffer, 'point');
-  // readFile('distancePointOpacities.bin', opacityBuffer, 'opacity');
-  // readFile('floorsPointHeights.bin', pointHeightBuffer, 'point');
-  // readFile('floorsPointOpacities.bin', opacityBuffer, 'opacity');
+  readFile('activityPoints.bin', pointsRead);
   
   // Reset steps
   stepsThisPoint = 0;
@@ -511,25 +506,74 @@ function drawActivityLines() {
   }, 900000);
 }
 
-function writeFile(fileName, fileBuffer) {
+function writeFile(fileBuffer) {
   console.log('writefile running!!!!');
   let file = fs.openSync(fileName, "a+");
+  console.log('file opened')
   fs.writeSync(file, fileBuffer); // write the record
+  console.log('file written')
   fs.closeSync(file); // and commit changes -- important if you are about to read from the file
+  console.log('file closed');
+  return;
 }
 
-function readFile(fileName, fileBuffer, typeView) {
-  console.log('readfile running!!!!');
+async function restorePreviousLines() {
+  const files = utils.getDeviceFileNames();
+  console.log(`files are ${files} ${typeof files}`);
+  console.log('type')
+  if (files && files.length) {
+    for (let i = 0; i <= files.length; i++) {
+      console.log(`in file loop as ${files[i]}`)
+      if (files[i] && file[i] !== 'undefined') {
+        // await readFile(files[i], pointsRead);
+      }
+    }
+  }
+  utils.deleteAllFiles();
+}
+
+async function makeNewFile() {
+ fileName = `activityPoints${new Date().valueOf()}.bin`;
+}
+
+async function readFile(fileName, fileBuffer) {
+  console.log(`readfile running!!!! ${fileName}`);
   let file = fs.openSync(fileName, "r");
   // let buffer = new ArrayBuffer(1 * 96);
-  fs.readSync(file, fileBuffer);
-  if (typeView === 'point') {
-    let data = new Uint8Array(fileBuffer);
-  } else {
+  // for (let i = 0; i < 400; i += 100) {
+  //   console.log(`in loop at ${i}`)
+  //   await fs.readSync(file, fileBuffer, i);
+  //   let data = new Uint32Array(fileBuffer);
+  //   console.log(`data ${i} ${data}`)
+  //   setPreviousPoints(data, readBufferPos[i]);
+  // }
+    await fs.readSync(file, fileBuffer, 0);
     let data = new Uint32Array(fileBuffer);
-  }
-  console.log('data is' + JSON.stringify(data))
+    setPreviousPoints(data, readBufferPos[0]);
+  
+    await fs.readSync(file, fileBuffer, 100);
+    data = new Uint32Array(fileBuffer);
+    setPreviousPoints(data, readBufferPos[100]);
+  
+    await fs.readSync(file, fileBuffer, 200);
+    data = new Uint32Array(fileBuffer);
+    setPreviousPoints(data, readBufferPos[200]);
+ 
+    await fs.readSync(file, fileBuffer, 300);
+    data = new Uint32Array(fileBuffer);
+    setPreviousPoints(data, readBufferPos[300]);
+  // }
   fs.closeSync(file);
+}
+
+function setPreviousPoints(data, type) {
+  console.log(`set previous points called! ${type}`);
+  Object.keys(data).forEach((item) => {
+    if (data[item] !== 0) {
+      console.log(`we have data ${item} ${data[item]}`)
+      setPoint(item, data[item], type);
+    }
+  });
 }
 
 display.onchange = function() {
@@ -541,6 +585,7 @@ display.onchange = function() {
   if (display.on && !updatesRunning && !updateTime) {
     // Screen is on - update current activity line
     updateActivityLine();
+    writeFile(pointsView);
   }
 }
 
