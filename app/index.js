@@ -158,6 +158,7 @@ clock.ontick = (evt) => {
 }
 
 if (initialize) {
+  // utils.deleteAllFiles();
   initialize = false;
   updateActivityLine();
   checkPreviousLines();
@@ -235,7 +236,7 @@ function setPoint(point, height, type) {
   pointElement.y2 = y2;
   pointElement.style.opacity = opacity;
   
-  if (type !== 'time' && height !== 0) {
+  if (type !== 'time' && Math.round(height) !== 0) {
     console.log(`setting point buffer!! ${bufferPos[type]}${point} - ${Math.round(height)}`)
     pointsView[`${bufferPos[type]}${point}`] = Math.round(height);
   }
@@ -397,7 +398,7 @@ function setPreviousActivityLine(total, type) {
   setPoint(currentPoint, lineHeight, type);
   currentLine['visible'] = true;
   if (type !== 'time') {
-    console.log(`SETTING POINT ${bufferPos[type]}${currentPoint}`);
+    // console.log(`SETTING POINT ${bufferPos[type]}${currentPoint}`);
     pointsView[`${bufferPos[type]}${currentPoint}`] = lineHeight + calculateLineOpacity(lineHeight);
   }
   
@@ -457,21 +458,21 @@ async function updateActivityLines() {
     // Current point is midnight, reset points
     resetPoints();
   } else {
-    console.log('SETTING PREVIOUS ACTIVITY LINES');
+    // console.log('SETTING PREVIOUS ACTIVITY LINES');
     // Set final count for previous line
     await setPreviousActivityLine(caloriesOffset, "calories");
     await setPreviousActivityLine(stepsOffset, "steps");
     await setPreviousActivityLine(distanceOffset, "distance");
     await setPreviousActivityLine(floorsOffset, "floors");
     
-    console.log(`writing file!! points view ${pointsView}`);
+    // console.log(`writing file!! points view ${pointsView}`);
     writeFile(pointsView);
 
     checkPreviousLines();
   }
   
   // Read file testing
-  readFile('activityPoints.bin', pointsRead);
+  ('activityPoints.bin', pointsRead);
   
   // Reset steps
   stepsThisPoint = 0;
@@ -519,20 +520,17 @@ function writeFile(fileBuffer) {
 
 async function restorePreviousLines() {
   const files = utils.getDeviceFileNames();
-  console.log(`files are ${files} ${typeof files}`);
-  console.log('type')
   if (files && files.length) {
-    for (let i = 0; i <= files.length; i++) {
-      console.log(`in file loop as ${files[i]}`)
-      if (files[i] && file[i] !== 'undefined') {
-        // await readFile(files[i], pointsRead);
+    for (let i = 0; i < files.length; i++) {
+      if (files[i] && files[i] !== 'undefined') {
+        await readFile(files[i], pointsRead);
       }
     }
   }
-  utils.deleteAllFiles();
 }
 
 async function makeNewFile() {
+ utils.deleteAllFiles();
  fileName = `activityPoints${new Date().valueOf()}.bin`;
 }
 
@@ -547,31 +545,26 @@ async function readFile(fileName, fileBuffer) {
   //   console.log(`data ${i} ${data}`)
   //   setPreviousPoints(data, readBufferPos[i]);
   // }
-    await fs.readSync(file, fileBuffer, 0);
-    let data = new Uint32Array(fileBuffer);
-    setPreviousPoints(data, readBufferPos[0]);
-  
-    await fs.readSync(file, fileBuffer, 100);
-    data = new Uint32Array(fileBuffer);
-    setPreviousPoints(data, readBufferPos[100]);
-  
-    await fs.readSync(file, fileBuffer, 200);
-    data = new Uint32Array(fileBuffer);
-    setPreviousPoints(data, readBufferPos[200]);
- 
-    await fs.readSync(file, fileBuffer, 300);
-    data = new Uint32Array(fileBuffer);
-    setPreviousPoints(data, readBufferPos[300]);
-  // }
+  await fs.readSync(file, fileBuffer);
+  let data = new Uint32Array(fileBuffer);
+  setPreviousPoints(data);
+
   fs.closeSync(file);
 }
 
-function setPreviousPoints(data, type) {
-  console.log(`set previous points called! ${type}`);
+function setPreviousPoints(data) {
   Object.keys(data).forEach((item) => {
     if (data[item] !== 0) {
       console.log(`we have data ${item} ${data[item]}`)
-      setPoint(item, data[item], type);
+      let point = item;
+      let pointType = 0;
+      if (item.toString().length === 3) {
+        // Convert number to correct point
+       point = item.toString().substring(1, 3);
+       pointType = parseInt(item.toString().substring(0, 1)) * 100;
+      }
+      console.log(`point type is ${pointType}, converting to ${readBufferPos[pointType]}`)
+      setPoint(point, data[item], readBufferPos[pointType]);
     }
   });
 }
