@@ -44,6 +44,10 @@ let distanceThisPoint = 0;
 let distanceOffset = today.adjusted.distance;
 let floorsThisPoint = 0;
 let floorsOffset = today.adjusted.elevationGain;
+let restoredStepsThisPoint = 0;
+let restoredCaloriesThisPoint = 0;
+let restoredDistanceThisPoint = 0;
+let restoredFloorsThisPoint = 0;
 
 const maxLineHeight = 20;
 const maxSteps = 250;
@@ -61,23 +65,7 @@ let hours = date.getHours();
 let mins = date.getMinutes();
 let checkIfCorrectInterval;
 
-// Points
-// let pointHeightBuffer = new ArrayBuffer(1 * 96);
-// let caloriesPointHeights = new Uint8Array(pointHeightBuffer);
-// let stepPointHeights = new Uint8Array(pointHeightBuffer);
-// let distancePointHeights = new Uint8Array(pointHeightBuffer);
-// let floorsPointHeights = new Uint8Array(pointHeightBuffer);
-// Opacities
-// let opacityBuffer = new ArrayBuffer(4 * 96);
-// let caloriesPointOpacity = new Uint32Array(opacityBuffer);
-// let stepPointOpacity = new Uint32Array(opacityBuffer);
-// let distancePointOpacity = new Uint32Array(opacityBuffer);
-// let floorsPointOpacity = new Uint32Array(opacityBuffer);
-// Read buffers
-// let pointHeightFile = new Uint8Array(pointHeightBuffer);
-// let opacityFile = new Uint32Array(opacityBuffer);
-
-let pointsBuffer = new ArrayBuffer(4 * 4 * 96);
+let pointsBuffer = new ArrayBuffer(4 * 4 * 100);
 let pointsView = new Uint32Array(pointsBuffer);
 let pointsRead = new Uint32Array(pointsBuffer);
 let fileName;
@@ -157,12 +145,16 @@ clock.ontick = (evt) => {
   // updateActivityLine();
 }
 
-if (initialize) {
-  // utils.deleteAllFiles();
-  initialize = false;
-  updateActivityLine();
-  checkPreviousLines();
-  fileSetup();
+setup();
+
+async function setup() {
+  console.log('setup called');
+  if (initialize) {
+    initialize = false;
+    await fileSetup();
+    updateActivityLine();
+    checkPreviousLines();
+  }
 }
 
 async function fileSetup() {
@@ -202,18 +194,14 @@ if (!updatesScheduled) {
 // }
 
 function setPoint(point, height, type) {
-  console.log(`setPoint called point: ${point} height: ${height} type: ${type}`);
+  if (type !== 'time') {
+    console.log(`setPoint called point: ${point} height: ${height} type: ${type}`);
+  }
   if (height === 0 && type !== 'time') {
     return;
   }
-  // if (type !== 'time') {
-    // console.log(`SET POINT CALLED WITH ${point} ${height} ${type}`)
-  // }
  
   let pointElement = document.getElementById(`${type}Point${point}`);
-  // if (type !== 'time') {
-    // console.log(`point element is ${type}Point${point}`);
-  // }
 
   var t = interval * point;
   var r = 110;
@@ -239,24 +227,6 @@ function setPoint(point, height, type) {
   if (type !== 'time' && Math.round(height) !== 0) {
     console.log(`setting point buffer!! ${bufferPos[type]}${point} - ${Math.round(height)}`)
     pointsView[`${bufferPos[type]}${point}`] = Math.round(height);
-  }
-}
-
-
-function restorePointsToDevice() {
-  let pointTypes = ['x1', 'y1', 'x2', 'y2', 'opacity']
-  for (const line in restoreData) {
-    let pointElement = document.getElementById(`${line}`);
-
-    for (let i = 0; i < pointTypes.length; i++) {
-      if (pointTypes[i] in restoreData[line]) {
-        if (pointTypes[i] !== 'opacity') {
-          pointElement[pointTypes[i]] = restoreData[line][pointTypes[i]]
-        } else {
-          pointElement['style'][pointTypes[i]] = restoreData[line][pointTypes[i]];
-        }
-      }
-    }
   }
 }
 
@@ -345,29 +315,31 @@ function addActivityLine(point = null) {
 }
 
 function updateActivityLine() {
+  console.log('updateactivityline called');
   const currentLine = getCurrentPoint();
   const currentPoint = currentLine['point'];
   let lineHeight;
 
+  console.log(`restoredcalories this point ${restoredCaloriesThisPoint}`)
   // Calculate calories since previous point
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
-  lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
-  setPoint(currentPoint, lineHeight, 'calories');
+  lineHeight = calculateLineHeight(caloriesThisPoint, 'calories');
+  setPoint(currentPoint, Math.max(lineHeight, restoredCaloriesThisPoint), 'calories');
   
   // Calculate steps since previous point
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
   lineHeight = calculateLineHeight(stepsThisPoint, "steps");
-  setPoint(currentPoint, lineHeight, 'steps');
-  
+  setPoint(currentPoint, Math.max(lineHeight, restoredStepsThisPoint), 'steps');
+
   // Calculate distance since previous point
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
-  lineHeight = calculateLineHeight(distanceThisPoint, "distance");
-  setPoint(currentPoint, lineHeight, 'distance');
+  lineHeight = calculateLineHeight(distanceThisPoint, 'distance');
+  setPoint(currentPoint, Math.max(lineHeight, restoredDistanceThisPoint), 'distance');
 
   // Calculate floors since previous point
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
-  lineHeight = calculateLineHeight(floorsThisPoint, "floors");
-  setPoint(currentPoint, lineHeight, 'floors');
+  lineHeight = calculateLineHeight(floorsThisPoint, 'floors');
+  setPoint(currentPoint, Math.max(lineHeight, restoredFloorsThisPoint), 'floors');
 
   currentLine['visible'] = true;
 }
@@ -465,14 +437,16 @@ async function updateActivityLines() {
     await setPreviousActivityLine(distanceOffset, "distance");
     await setPreviousActivityLine(floorsOffset, "floors");
     
+    restoredStepsThisPoint = 0;
+    restoredCaloriesThisPoint = 0;
+    restoredDistanceThisPoint = 0;
+    restoredFloorsThisPoint = 0;
+    
     // console.log(`writing file!! points view ${pointsView}`);
     writeFile(pointsView);
 
     checkPreviousLines();
   }
-  
-  // Read file testing
-  ('activityPoints.bin', pointsRead);
   
   // Reset steps
   stepsThisPoint = 0;
@@ -553,18 +527,34 @@ async function readFile(fileName, fileBuffer) {
 }
 
 function setPreviousPoints(data) {
+  const currentLine = getCurrentPoint();
+  const currentPoint = currentLine['point'];
+
   Object.keys(data).forEach((item) => {
     if (data[item] !== 0) {
       console.log(`we have data ${item} ${data[item]}`)
       let point = item;
-      let pointType = 0;
+      let pointPos = 0;
       if (item.toString().length === 3) {
         // Convert number to correct point
        point = item.toString().substring(1, 3);
-       pointType = parseInt(item.toString().substring(0, 1)) * 100;
+       pointPos = parseInt(item.toString().substring(0, 1)) * 100;
       }
-      console.log(`point type is ${pointType}, converting to ${readBufferPos[pointType]}`)
-      setPoint(point, data[item], readBufferPos[pointType]);
+      let pointType = readBufferPos[pointPos]
+      if (point == currentPoint) {
+        console.log('point equals currentPoint!')
+        if (pointType === 'calories') {
+          restoredCaloriesThisPoint = data[item];
+        } else if (pointType === 'steps') {
+          restoredStepsThisPoint = data[item];
+        } else if (pointType === 'distance') {
+          restoredDistanceThisPoint = data[item];
+        } else {
+          restoredFloorsThisPoint = data[item];
+        }
+      }
+      console.log(`point type is ${pointType}, converting to ${pointType}`)
+      setPoint(point, data[item], pointType);
     }
   });
 }
