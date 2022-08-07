@@ -3,22 +3,22 @@
     "@fitbit/sdk": "~4.2.0"
   },
   "fitbit": {
-    "appUUID": "fc9e71f6-2de8-49e5-950d-b85d07bc0be6",
+    "appUUID": "d334bdfb-0e04-4f40-b68d-efa6b2355e69",
     "appType": "clockface",
-    "appDisplayName": "Halo Clockface",
+    "appDisplayName": "Halo Clockface - Single lines",
     "iconFile": "resources/icon.png",
-    "wipeColor": "#607d8b",
+    "wipeColor": "",
     "requestedPermissions": [
-      "access_heart_rate",
+      "access_activity",
       "access_user_profile",
-      "access_activity"
+      "access_heart_rate"
     ],
     "buildTargets": [
       "meson"
     ],
     "i18n": {
       "en-US": {
-        "name": "Halo Clockface"
+        "name": "Halo Clockface - Single lines"
       }
     },
     "defaultLanguage": "en-US"

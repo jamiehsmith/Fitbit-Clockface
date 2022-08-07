@@ -8,6 +8,7 @@ import { HeartRateSensor } from "heart-rate";
 import { BodyPresenceSensor } from "body-presence";
 import { battery, charger } from "power";
 import * as fs from "fs";
+import * as messaging from "messaging";
 
 // Update the clock every minute
 clock.granularity = 'seconds';
@@ -15,7 +16,6 @@ clock.granularity = 'seconds';
 const timeLabel = document.getElementById("timeLabel");
 const secLabel = document.getElementById("secLabel");
 const dateLabel = document.getElementById("dateLabel");
-// const dayLabel = document.getElementById("dayLabel");
 const caloriesLabel = document.getElementById("caloriesLabel");
 const stepsLabel = document.getElementById("stepsLabel");
 const distanceLabel = document.getElementById("distanceLabel");
@@ -29,6 +29,9 @@ const floorsTestLabel = document.getElementById("floorsTestLabel");
 const azmLabel = document.getElementById("azmLabel");
 const heartRateLabel = document.getElementById("heartRateLabel");
 const batteryLabel = document.getElementById("batteryLabel");
+
+let weatherForecastImg = document.getElementById("weatherForecast");
+let weatherTemp = document.getElementById("weatherTemp");
 
 let stepsThisPoint = 0;
 let stepsOffset = today.adjusted.steps;
@@ -55,6 +58,7 @@ let hours = date.getHours();
 let mins = date.getMinutes();
 let checkIfCorrectInterval;
 let restoreData = {};
+let restoredPoint = false;
 
 clock.ontick = (evt) => {
   let today_dt = evt.date;
@@ -118,10 +122,13 @@ if (initialize) {
   initialize = false;
   restoreData = fs.readFileSync("restorePoints.txt", "json");
   const currentPoint = getCurrentPoint()['point'];
-  if (Object.keys(restoreData).length) {
+  
+  if (restoreData && Object.keys(restoreData) && Object.keys(restoreData).length) {
     restorePointsToDevice();
     if (!restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`)) {
       updateActivityLine();
+    } else {
+      restoredPoint = true;
     }
   } else {
     updateActivityLine();
@@ -178,7 +185,7 @@ function setPoint(point, height, type) {
   pointElement.y1 = y;
   pointElement.x2 = x2;
   pointElement.y2 = y2;
-  pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
+  // pointElement.style.opacity = Math.max((height / maxLineHeight), .3);
   
   if (type != "time") {
     let restoreData = {
@@ -231,7 +238,7 @@ function resetPoints() {
       for (let c = 0; c < coordinates.length; c++) {
         pointElements[p][c] = 149;
       }
-      pointElements[p]['style']['opacity'] = 1;
+      // pointElements[p]['style']['opacity'] = 1;
     }
   }
 
@@ -302,7 +309,7 @@ function updateActivityLine() {
   caloriesThisPoint = today.adjusted.calories - caloriesOffset || 0;
   // caloriesTestLabel.text = `${caloriesThisPoint} / ${maxCalories}`;
   lineHeight = calculateLineHeight(caloriesThisPoint, "calories");
-  if ((restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`) && restoreData[`caloriesPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`)) {
+  if (!restoredPoint || (restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`) && restoreData[`caloriesPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`caloriesPoint${currentPoint}`)) {
     setPoint(currentPoint, lineHeight, "calories");
   }
   
@@ -310,7 +317,7 @@ function updateActivityLine() {
   stepsThisPoint = today.adjusted.steps - stepsOffset || 0;
   // stepsTestLabel.text = `${stepsThisPoint} / ${maxSteps}`;
   lineHeight = calculateLineHeight(stepsThisPoint, "step");
-  if ((restoreData.hasOwnProperty(`stepPoint${currentPoint}`) && restoreData[`stepPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`stepPoint${currentPoint}`)) {
+  if (!restoredPoint || (restoreData.hasOwnProperty(`stepPoint${currentPoint}`) && restoreData[`stepPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`stepPoint${currentPoint}`)) {
     setPoint(currentPoint, lineHeight, "step");
   }
   
@@ -318,7 +325,7 @@ function updateActivityLine() {
   distanceThisPoint = today.adjusted.distance - distanceOffset || 0;
   // distanceTestLabel.text = `${distanceThisPoint} / ${maxDistance}`;
   lineHeight = calculateLineHeight(distanceThisPoint, "distance");
-  if ((restoreData.hasOwnProperty(`distancePoint${currentPoint}`) && restoreData[`distancePoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`distancePoint${currentPoint}`)) {
+  if (!restoredPoint || (restoreData.hasOwnProperty(`distancePoint${currentPoint}`) && restoreData[`distancePoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`distancePoint${currentPoint}`)) {
     setPoint(currentPoint, lineHeight, "distance");
   }
   
@@ -326,7 +333,7 @@ function updateActivityLine() {
   floorsThisPoint = today.adjusted.elevationGain - floorsOffset || 0;
   // floorsTestLabel.text = `${floorsThisPoint} / ${maxFloors}`;
   lineHeight = calculateLineHeight(floorsThisPoint, "floors");
-  if ((restoreData.hasOwnProperty(`floorsPoint${currentPoint}`) && restoreData[`floorsPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`floorsPoint${currentPoint}`)) {
+  if (!restoredPoint || (restoreData.hasOwnProperty(`floorsPoint${currentPoint}`) && restoreData[`floorsPoint${currentPoint}`]['height'] < lineHeight) || !restoreData.hasOwnProperty(`floorsPoint${currentPoint}`)) {
     setPoint(currentPoint, lineHeight, "floors");
   }
 
@@ -413,6 +420,9 @@ async function updateActivityLines() {
   date = new Date();
   hours = date.getHours();
   mins = date.getMinutes();
+  if (restoredPoint) {
+    restoredPoint = false;
+  }
   if (hours === 0 && mins === 0) {
     // Current point is midnight, reset points
     resetPoints();
@@ -498,3 +508,53 @@ body.onreading = () => {
     }
 };
 body.start();
+
+function fetchWeather() {
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    // Send a command to the companion
+    messaging.peerSocket.send({
+      command: 'weather'
+    });
+  }
+}
+
+function processWeatherData(data) {
+  console.log('data is', JSON.stringify(data));
+  // weatherForecast.text = data.forecast;
+  let displayTemp = Math.round(data.temperature);
+  weatherTemp.text = `${displayTemp} ${data.temp_unit}`;
+  
+  const nowHours = new Date().getHours();
+  const isDaytime = nowHours > 6 && nowHours < 18;
+  console.log('is day?', isDaytime);
+  weatherForecastImg.href = utils.getWeatherIcon(data.id, isDaytime);
+}
+
+// Listen for the onopen event
+messaging.peerSocket.onopen = function() {
+  // Fetch weather when the connection opens
+  fetchWeather();
+}
+
+// Listen for messages from the companion
+messaging.peerSocket.onmessage = function(evt) {
+  if (evt.data) {
+      if (evt.data['type'] == 'new_weather'){
+        processWeatherData(evt.data);
+      } else if (evt.data['type'] == 'new_unit') {
+        let tempUnitLabel = document.getElementById("tempUnitLabel");
+        tempUnitLabel.text = `${evt.data['value']['values'][0]['name']}`;
+      } else if (evt.data['type'] == 'calories') {
+        processCalories(evt.data);
+      }
+   }
+}
+
+// Listen for the onerror event
+messaging.peerSocket.onerror = function(err) {
+  // Handle any errors
+  console.log("Connection error: " + err.code + " - " + err.message);
+}
+
+// Fetch the weather every 30 minutes
+setInterval(fetchWeather, 30 * 1000 * 60);

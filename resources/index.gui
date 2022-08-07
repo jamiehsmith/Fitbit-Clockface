@@ -501,11 +501,15 @@
 <text id="azmLabel" />
 <text id="heartRateLabel" />
 <text id="batteryLabel" />
+
+<!-- <text id="weatherForecast"/> -->
+<image id="weatherForecast"/>
+<text id="weatherTemp"/>
   
-<text id="caloriesTestLabel" />
+<!-- <text id="caloriesTestLabel" />
 <text id="stepsTestLabel" />
 <text id="distanceTestLabel" />
-<text id="floorsTestLabel" />
+<text id="floorsTestLabel" /> -->
   
 <!-- <gradientRect gradient-x1="0" gradient-y1="0" gradient-x2="150" gradient-y2="150" width="25%" height="25%" id="testPoint1" gradient-color1="magenta" gradient-color2="red" /> -->
 <!-- <gradientRect gradient-x1="1" gradient-y1="1" gradient-x2="2" gradient-y2="2" width="3" height="3" id="testPoint2" gradient-color1="blue" gradient-color2="purple" /> -->
